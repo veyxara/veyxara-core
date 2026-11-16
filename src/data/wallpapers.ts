@@ -220,24 +220,6 @@ export const wallpapers: Wallpaper[] = [
     downloadUrl: '/wallpapers/rey-serpiente.webp'
   },
    {
-    id: 'paisaje-alienigena',
-    title: 'Paisaje Alienigena',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/paisaje-alienigena.webp',    
-    downloadUrl: '/wallpapers/paisaje-alienigena.webp'
-  },
-   {
-    id: 'cerbero',
-    title: 'Cerbero perro de tres cabezas',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/cerbero.webp',    
-    downloadUrl: '/wallpapers/cerbero.webp'
-  },
-   {
     id: 'albert-einstein',
     title: 'Albert Einstein',
     category: 'Desktop', 
@@ -335,15 +317,6 @@ export const wallpapers: Wallpaper[] = [
     aspectRatio: '9:16',
     image: '/wallpapers/tecnologia-futuro.webp',    
     downloadUrl: '/wallpapers/tecnologia-futuro.webp'
-  },
-  {
-    id: 'el-futuro',
-    title: 'La IA segun Veyxara',
-    category: 'Desktop', 
-    resolution: '3840x2160 (4K)',
-    aspectRatio: '16:9',
-    image: '/wallpapers/el-futuro.webp',    
-    downloadUrl: '/wallpapers/el-futuro.webp'
   },
   {
     id: 'guardian-estratega',
