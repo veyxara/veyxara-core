@@ -1,0 +1,185 @@
+﻿---
+// src/pages/tools/mx.astro
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Validador de Registros MX | Veyxara Core">
+  <main class="w-full min-h-[calc(100vh-76px)] py-12 px-4 sm:px-6 bg-slate-200 border-t border-slate-300 text-slate-900">
+    <div class="max-w-4xl mx-auto space-y-8">
+      
+      <!-- Navegación de retorno -->
+      <div>
+        <a 
+          href="/tools" 
+          class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-sm"
+        >
+          <span>←</span> Volver a Herramientas
+        </a>
+      </div>
+
+      <!-- Bloque de Cabecera SEO unificado -->
+      <div class="bg-slate-200 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-neutral-600 border-b border-slate-300 pb-3">
+          <span class="px-3 py-1 bg-amber-300/80 text-neutral-900 font-bold rounded-md uppercase tracking-wider">Infraestructura de Correo</span>
+          <div class="flex items-center gap-4">
+            <span>Actualizado: 22 Sept, 2026</span>
+            <span>Versión: 1.2.0</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 text-center max-w-2xl mx-auto pt-2">
+          <h1 class="text-3xl md:text-4xl font-display font-bold text-slate-950 tracking-wide uppercase">
+            VALIDADOR DE REGISTROS MX
+          </h1>
+          <p class="text-slate-700 font-medium text-base">
+            Verifica los servidores de correo electrónico configurados y su jerarquía de prioridad para cualquier dominio.
+          </p>
+        </div>
+      </div>
+
+      <!-- Buscador -->
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <form id="mx-form" class="flex flex-col sm:flex-row gap-3">
+          <input 
+            type="text" 
+            id="domain-input" 
+            placeholder="Ej. midominio.com" 
+            required
+            class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono text-base focus:outline-none focus:border-amber-500 shadow-inner placeholder-slate-500"
+          />
+          <button 
+            type="submit"
+            class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-xl transition-colors shadow-sm cursor-pointer"
+          >
+            Consultar MX
+          </button>
+        </form>
+      </div>
+
+      <!-- Contenedor de Resultados -->
+      <div id="results-container" class="space-y-4">
+        <h2 class="text-xl font-bold text-slate-950">Servidores de Correo Encontrados</h2>
+        
+        <div id="results-content" class="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center text-slate-400 font-medium shadow-xl">
+          Ingresa un dominio para consultar sus registros de correo.
+        </div>
+      </div>
+
+      <!-- Bloque de Texto Técnico Inferior (SEO Semántico para Sysadmins) -->
+      <section class="bg-white border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 text-neutral-800">
+        <h2 class="text-2xl font-display font-bold text-neutral-900 border-b border-slate-200 pb-3">
+          Guía Técnica: Diagnóstico de Registros MX y Enrutamiento de Correo Electrónico en DNS
+        </h2>
+
+        <div class="space-y-4 text-sm sm:text-base leading-relaxed text-neutral-700">
+          <p>
+            Los registros de intercambio de correo (<code class="bg-slate-100 px-1.5 py-0.5 rounded text-amber-700 font-mono text-xs">MX records</code>) constituyen un pilar fundamental en la infraestructura de red corporativa, determinando qué servidores están autorizados para recibir mensajes SMTP en nombre de un dominio. Una correcta jerarquía de prioridades asegura la alta disponibilidad y la entrega eficiente del correo electrónico empresarial.
+          </p>
+
+          <h3 class="text-lg font-bold text-neutral-900 pt-2">¿Cómo se evalúa la jerarquía de prioridad y resolución IP?</h3>
+          <p>
+            El sistema realiza una consulta directa a los servidores de nombres para extraer el valor de preferencia (donde los números menores indican mayor prioridad de enrutamiento) y resuelve de forma paralela las direcciones IP asociadas al hostname del servidor de correo, facilitando auditorías de conectividad y mitigación de fallos de entrega.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-neutral-900 text-sm uppercase tracking-wide">Buenas Prácticas de Sysadmins</h4>
+              <ul class="list-disc list-inside space-y-1 text-xs text-neutral-600">
+                <li>Configurar múltiples registros MX con prioridades escalonadas para garantizar redundancia ante caídas de servicio.</li>
+                <li>Validar la concordancia entre los registros MX y los registros inversos (PTR) para prevenir bloqueos por políticas antispam.</li>
+                <li>Monitorear de forma constante la vigencia y resolución de los servidores de correo principales (Primary MX).</li>
+              </ul>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-neutral-900 text-sm uppercase tracking-wide">Seguridad en Infraestructura DNS</h4>
+              <p class="text-xs text-neutral-600">
+                La correcta integración de registros MX debe complementarse con políticas estrictas de autenticación de correo como SPF, DKIM y DMARC para blindar el dominio contra la suplantación de identidad y el phishing corporativo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('mx-form') as HTMLFormElement;
+    const input = document.getElementById('domain-input') as HTMLInputElement;
+    const content = document.getElementById('results-content') as HTMLDivElement;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const domain = input.value.trim();
+      if (!domain) return;
+
+      content.innerHTML = `
+        <div class="py-8 flex justify-center items-center gap-3">
+          <svg class="animate-spin h-6 w-6 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="font-semibold text-slate-300">Consultando registros DNS...</span>
+        </div>
+      `;
+
+      try {
+        const response = await fetch(`/api/mx?domain=${encodeURIComponent(domain)}`);
+        const result = await response.json();
+
+        if (!result.success) {
+          content.innerHTML = `<p class="text-red-400 font-semibold py-4">${result.error || 'Ocurrió un error al procesar la solicitud.'}</p>`;
+          return;
+        }
+
+        if (!result.data || result.data.length === 0) {
+          content.innerHTML = `
+            <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl text-left shadow-inner">
+              <p class="font-bold text-amber-400">Aviso de Configuración</p>
+              <p class="text-slate-300 text-sm mt-1">${result.message || 'No se encontraron registros MX para este dominio.'}</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 shadow-xl text-left">
+            <table class="w-full border-collapse text-sm">
+              <thead class="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4 w-20">Pref</th>
+                  <th class="py-3 px-4">Hostname</th>
+                  <th class="py-3 px-4">IP Address</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 text-slate-300">
+        `;
+
+        result.data.forEach((mx: any) => {
+          const ips = Array.isArray(mx.ip) ? mx.ip : [mx.ip || 'No disponible'];
+          ips.forEach((ipAddr: string) => {
+            html += `
+              <tr class="hover:bg-slate-900/50 transition-colors">
+                <td class="py-3 px-4 font-semibold text-amber-400">${mx.priority}</td>
+                <td class="py-3 px-4 text-amber-300 font-medium">${mx.exchange}</td>
+                <td class="py-3 px-4 font-mono text-xs text-slate-400">${ipAddr}</td>
+              </tr>
+            `;
+          });
+        });
+
+        html += `
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        content.innerHTML = html;
+
+      } catch (error) {
+        content.innerHTML = `<p class="text-red-400 font-semibold py-4">Error de red al conectar con el servidor.</p>`;
+      }
+    });
+  </script>
+</Layout>

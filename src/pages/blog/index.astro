@@ -1,0 +1,290 @@
+---
+export const prerender = true;
+
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ArticleCard from '../../components/blog/ArticleCard.astro';
+
+// 1. Obtener todos los artículos de la colección de infraestructura
+const posts = await getCollection('recursos');
+
+// Ordenar por fecha de publicación (los más recientes primero)
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.data.pubDate || 0).getTime();
+  const dateB = new Date(b.data.pubDate || 0).getTime();
+  return dateB - dateA;
+});
+
+// Extraer categorías únicas para los filtros interactivos
+const categories = ['Todos', ...new Set(posts.map((post) => post.data.category).filter(Boolean))];
+
+// 2. Metadatos SEO optimizados para la página principal del Blog
+const pageTitle = "Blog de Ingeniería, Hardening y Operaciones | Veyxara Core";
+const pageDescription = "Artículos técnicos de nivel 2 y 3 sobre Active Directory, Windows Server, Microsoft Intune, Azure y hardening de infraestructura IT.";
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
+const absImage = new URL("/images/og-image.png", Astro.site).href;
+---
+
+<Layout 
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonicalUrl}
+>
+  <!-- Inyección de Schema.org específico para Colección / Blog Index -->
+  <Fragment slot="head">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={absImage} />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={absImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": pageTitle,
+      "description": pageDescription,
+      "url": canonicalUrl,
+      "publisher": {
+        "@type": "Organization",
+        "name": "Veyxara Core",
+        "logo": {
+          "@type": "ImageObject",
+          "url": new URL("/favicon.svg", Astro.site).href
+        }
+      }
+    })} />
+  </Fragment>
+
+  <!-- --- 1. HERO BANNER PRINCIPAL (Negro Carbón Absoluto y Estética Veyxara Core) --- -->
+  <section class="w-full bg-[#cbd5e1] pt-8 pb-6 px-4 sm:px-6">
+    <div class="container mx-auto max-w-6xl">
+      
+      <!-- Contenedor Principal en Carbón Absoluto (#05070A) -->
+      <div class="relative bg-[#05070A] border-2 border-zinc-800 rounded-3xl overflow-hidden shadow-2xl text-[#E8EEF5]">
+        
+        <!-- Franja superior en Ámbar -->
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#FF6600] via-[#FF9900] to-[#FF6600]"></div>
+
+        <!-- Barrita Superior de Terminal -->
+        <div class="bg-[#0F131A] px-4 py-2.5 flex items-center justify-between border-b border-zinc-800 mt-1.5">
+          <div class="flex items-center space-x-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
+          </div>
+          <span class="text-[11px] font-mono font-bold text-[#00CFFF] tracking-wider uppercase">
+            VEYXARA // ENGINEERING BLOG & OPERATIONS
+          </span>
+        </div>
+
+        <!-- Contenido Interior del Hero -->
+        <div class="p-6 md:p-8 space-y-6">
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+            
+            <!-- Columna Izquierda: Títulos y Descripción -->
+            <div class="max-w-2xl space-y-3">
+              <span class="text-xs font-mono font-extrabold text-[#FF9900] uppercase tracking-widest block">
+                BITÁCORA & OPERACIONES
+              </span>
+              
+              <h1 class="text-xl sm:text-2xl font-display font-bold text-[#E8EEF5] tracking-tight leading-snug uppercase">
+                Artículos de ingeniería, <span class="text-[#FF9900]">hardening</span> y operaciones de infraestructura
+              </h1>
+              
+              <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed font-sans font-normal">
+                Aprendizajes, soluciones y buenas prácticas sobre seguridad, automatización e infraestructura IT.
+              </p>
+            </div>
+
+            <!-- Columna Derecha: Categorías Principales -->
+            <div class="flex flex-col gap-2 shrink-0 w-full lg:w-72 bg-[#0F131A] p-4 rounded-xl border border-zinc-800">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold mb-1">
+                // Categorías Principales
+              </span>
+              
+              <div class="flex items-center gap-2.5 py-1.5 px-2.5 rounded-lg bg-[#05070A] border border-zinc-800 text-zinc-200 text-xs font-medium">
+                <span class="h-1.5 w-1.5 rounded-full bg-[#00CFFF] shrink-0"></span>
+                Windows Server & Active Directory
+              </div>
+              
+              <div class="flex items-center gap-2.5 py-1.5 px-2.5 rounded-lg bg-[#05070A] border border-zinc-800 text-zinc-200 text-xs font-medium">
+                <span class="h-1.5 w-1.5 rounded-full bg-[#00CFFF] shrink-0"></span>
+                Microsoft 365 & Intune
+              </div>
+              
+              <div class="flex items-center gap-2.5 py-1.5 px-2.5 rounded-lg bg-[#05070A] border border-zinc-800 text-zinc-200 text-xs font-medium">
+                <span class="h-1.5 w-1.5 rounded-full bg-[#00CFFF] shrink-0"></span>
+                Azure & Cloud Security
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- --- 2. FRANJA CON BOTONES DE FILTRO Y BÚSQUEDA --- -->
+  <section class="bg-[#cbd5e1] py-4 border-b border-zinc-300/90 sticky top-[76px] z-30 shadow-xs">
+    <div class="container mx-auto max-w-6xl px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <div class="flex flex-wrap gap-2">
+        {categories.map((category) => (
+          <button
+            class={`category-filter px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all uppercase tracking-wider cursor-pointer ${
+              category === 'Todos'
+                ? 'bg-[#FF9900] text-[#05070A] active-filter shadow-md font-extrabold'
+                : 'bg-white text-zinc-800 hover:bg-zinc-50 border border-zinc-300/80 shadow-2xs'
+            }`}
+            data-category={category.toLowerCase()}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      <div class="w-full md:w-72 relative">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Buscar documentos..."
+          class="w-full pl-10 pr-4 py-2 bg-white border border-zinc-300 rounded-xl text-xs sm:text-sm text-zinc-900 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-[#FF9900] transition-all font-medium shadow-2xs"
+        />
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- --- 3. SECCIÓN DE CONTENIDO SEO Y ARTÍCULOS --- -->
+  <main class="bg-[#cbd5e1] min-h-screen py-8 text-neutral-900">
+    <div class="container mx-auto max-w-6xl px-4">
+      
+      <!-- Bloque de Texto Enriquecido para SEO -->
+      <section class="mb-8 bg-white/80 border border-zinc-300/90 rounded-xl p-5 shadow-xs">
+        <h2 class="text-base font-display font-bold text-zinc-900 mb-2 uppercase tracking-wide">
+          Base de Conocimientos Técnicos para Administradores de Sistemas
+        </h2>
+        <p class="text-zinc-700 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+          Bienvenido al centro operativo de <strong class="text-zinc-900">Veyxara Core</strong>. Este espacio recopila documentación técnica avanzada, guías de arquitectura híbrida, procedimientos de hardening en <strong class="text-zinc-900">Windows Server</strong>, gestión de identidades en <strong class="text-zinc-900">Active Directory</strong> y despliegues de políticas de seguridad mediante <strong class="text-zinc-900">Microsoft Intune</strong>. Todas las soluciones están diseñadas bajo principios estrictos de optimización, automatización con PowerShell y mitigación de vectores de ataque a nivel empresarial.
+        </p>
+      </section>
+
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-display font-bold text-neutral-900 uppercase tracking-wide">Últimos Artículos</h2>
+      </div>
+
+      {sortedPosts.length > 0 ? (
+        <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sortedPosts.map((post) => (
+            <div 
+              class="article-item" 
+              data-category={post.data.category?.toLowerCase() || ''}
+              data-title={post.data.title?.toLowerCase() || ''}
+              data-description={post.data.description?.toLowerCase() || ''}
+            >
+              <ArticleCard 
+                title={post.data.title}
+                description={post.data.description}
+                category={post.data.category}
+                pubDate={post.data.pubDate}
+                slug={post.id}
+                image={post.data.image}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-10 bg-white rounded-xl border border-zinc-300 shadow-xs">
+          <p class="text-zinc-700 text-sm font-medium">No hay artículos disponibles en este momento.</p>
+        </div>
+      )}
+
+      <div id="no-results" class="hidden text-center py-10 bg-white rounded-xl border border-zinc-300 shadow-xs">
+        <p class="text-zinc-700 text-sm font-medium">No se encontraron documentos que coincidan con la búsqueda.</p>
+      </div>
+
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const setupBlogFilters = () => {
+    const filterButtons = document.querySelectorAll('.category-filter');
+    const articles = document.querySelectorAll('.article-item');
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const noResults = document.getElementById('no-results');
+
+    let currentCategory = 'todos';
+    let currentQuery = '';
+    let debounceTimer: ReturnType<typeof setTimeout>;
+
+    function filterArticles() {
+      let visibleCount = 0;
+
+      articles.forEach((article) => {
+        const cat = article.getAttribute('data-category') || '';
+        const title = article.getAttribute('data-title') || '';
+        const desc = article.getAttribute('data-description') || '';
+
+        const matchesCategory = currentCategory === 'todos' || cat === currentCategory;
+        const matchesQuery = !currentQuery || title.includes(currentQuery) || desc.includes(currentQuery);
+
+        if (matchesCategory && matchesQuery) {
+          (article as HTMLElement).style.display = 'block';
+          visibleCount++;
+        } else {
+          (article as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (noResults) {
+        if (visibleCount === 0) {
+          noResults.classList.remove('hidden');
+        } else {
+          noResults.classList.add('hidden');
+        }
+      }
+    }
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        currentCategory = btn.getAttribute('data-category') || 'todos';
+
+        filterButtons.forEach((b) => {
+          b.classList.remove('bg-[#FF9900]', 'text-[#05070A]', 'shadow-md', 'active-filter', 'font-extrabold');
+          b.classList.add('bg-white', 'text-zinc-800', 'border-zinc-300/80', 'shadow-2xs');
+        });
+
+        btn.classList.remove('bg-white', 'text-zinc-800', 'border-zinc-300/80', 'shadow-2xs');
+        btn.classList.add('bg-[#FF9900]', 'text-[#05070A]', 'shadow-md', 'active-filter', 'font-extrabold');
+
+        filterArticles();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          currentQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+          filterArticles();
+        }, 150);
+      });
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', setupBlogFilters);
+  document.addEventListener('astro:page-load', setupBlogFilters);
+</script>

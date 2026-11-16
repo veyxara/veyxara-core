@@ -1,0 +1,298 @@
+﻿---
+import Layout from '../../layouts/Layout.astro';
+
+const pageTitle = "Validador de Reputación y Listas Negras | Veyxara Core";
+const pageDescription = "Verifica el estado de reputación de dominios y servidores de correo frente a motores de seguridad globales como Spamhaus DQS, Google Safe Browsing y PhishTank.";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<Layout 
+  title={pageTitle} 
+  description={pageDescription}
+  canonical={canonicalURL}
+>
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Botón de retorno a herramientas -->
+    <div class="mb-6">
+      <button 
+        type="button"
+        id="back-btn"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-[#D4AF37] hover:bg-[#c29d31] text-slate-950 font-bold rounded-xl text-xs transition-all shadow-md font-mono cursor-pointer"
+      >
+        ← VOLVER A HERRAMIENTAS
+      </button>
+    </div>
+
+    <!-- Cuadro de Cabecera Estilizado idéntico al estándar visual -->
+    <div class="bg-slate-100 border border-slate-200 rounded-2xl p-6 shadow-sm mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <span class="inline-block bg-[#FDE047]/60 border border-[#FACC15] text-slate-900 text-xs font-mono font-bold px-3 py-1 rounded-full w-fit">
+          Seguridad de Correo y Reputación
+        </span>
+        <div class="flex items-center gap-4 text-xs font-mono text-slate-600">
+          <span>Actualizado: 22 Sept, 2026</span>
+          <span>Versión: 1.1.0</span>
+        </div>
+      </div>
+      <hr class="border-slate-300 mb-6" />
+      <div class="text-center">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 font-mono mb-2">Validador de Reputación y Listas Negras</h1>
+        <p class="text-slate-600 text-sm max-w-2xl mx-auto font-medium">
+          Verifica el estado de reputación de dominios y servidores de correo frente a motores de seguridad globales como Spamhaus DQS, Google Safe Browsing y PhishTank.
+        </p>
+      </div>
+    </div>
+
+    <!-- Formulario de Consulta -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl mb-8">
+      <form id="spamhaus-form" class="space-y-4">
+        <div>
+          <label for="domain-input" class="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-2">
+            Dominio o Dirección IP a Analizar
+          </label>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input 
+              type="text" 
+              id="domain-input" 
+              placeholder="ej. miservidor.com o 192.0.2.1" 
+              required
+              class="w-full sm:flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-[#D4AF37] transition-all font-mono"
+            />
+            <button 
+              type="submit" 
+              id="submit-btn"
+              class="w-full sm:w-auto px-6 py-3 bg-[#D4AF37] hover:bg-[#c29d31] text-slate-950 font-bold rounded-xl text-sm transition-all shadow-md font-mono flex items-center justify-center sm:min-w-[160px] cursor-pointer"
+            >
+              Consultar Seguridad
+            </button>
+          </div>
+        </div>
+        <div id="cooldown-msg" class="text-xs text-amber-400 font-mono hidden"></div>
+      </form>
+    </div>
+
+    <!-- Resultados -->
+    <div id="result-container" class="space-y-6 hidden">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300">Resultados del Análisis Global</h2>
+        <ul id="engines-list" class="space-y-3 font-mono text-sm">
+          <!-- Dinámico -->
+        </ul>
+      </div>
+
+      <div id="result-details" class="space-y-4">
+        <!-- Guías de remediación dinámicas -->
+      </div>
+    </div>
+
+    <!-- Bloque de Contenido Técnico y Semántico para SEO (Corregido con excelente contraste) -->
+    <article class="mt-12 bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 text-slate-200 font-sans text-sm leading-relaxed shadow-xl">
+      <div class="border-b border-slate-800 pb-4">
+        <h2 class="text-lg font-bold font-mono text-slate-100 flex items-center gap-2">
+          <span class="text-[#D4AF37]">#</span> Guía Técnica: Auditoría de Reputación y Listas Negras (RBL/DNSBL)
+        </h2>
+        <p class="text-xs text-slate-400 font-mono mt-1">Fundamentos de seguridad perimetral y mitigación de bloqueos de correo electrónico.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-3">
+          <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-[#D4AF37]">¿Qué valida esta herramienta?</h3>
+          <p class="text-slate-300">
+            Esta utilidad interactiva consulta en tiempo real los principales sistemas de reputación de infraestructura de Internet. Para los administradores de sistemas (sysadmins) y operadores de servidores de correo, verificar la salud del dominio y de las direcciones IP públicas es crucial para garantizar la entregabilidad del correo electrónico (deliverability) y evitar el bloqueo por parte de ISPs globales.
+          </p>
+          <ul class="list-disc pl-5 space-y-1 text-xs text-slate-300">
+            <li><strong class="text-slate-100">Spamhaus DQS / ZEN:</strong> Identifica si tu IP o dominio está catalogado por enviar correo no deseado (spam), participar en redes de bots o alojar malware.</li>
+            <li><strong class="text-slate-100">Google Safe Browsing:</strong> Analiza si el sitio web distribuye software malicioso o ejecuta prácticas de suplantación de identidad (phishing).</li>
+            <li><strong class="text-slate-100">PhishTank:</strong> Comprueba la presencia de reportes activos sobre páginas fraudulentas vinculadas al dominio analizado.</li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-[#D4AF37]">Proceso de Remediación y Buenas Prácticas</h3>
+          <p class="text-slate-300">
+            Si el analizador reporta un estado de <span class="text-amber-400 font-mono font-bold">Listado</span>, es necesario actuar de inmediato para limpiar la infraestructura subyacente:
+          </p>
+          <ol class="list-decimal pl-5 space-y-1 text-xs text-slate-300">
+            <li><strong class="text-slate-100">Aislar el servidor afectado:</strong> Detén la propagación de spam o malware revisando los logs de autenticación SMTP y de servidores web.</li>
+            <li><strong class="text-slate-100">Validar registros DNS:</strong> Asegura una correcta configuración de políticas de autenticación perimetral como SPF, DKIM y DMARC.</li>
+            <li><strong class="text-slate-100">Gestionar la exclusión (Delist):</strong> Utiliza los portales oficiales provistos en los detalles de remediación para solicitar la baja del bloqueo una vez solucionada la incidencia.</li>
+          </ol>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <script>
+    const form = document.getElementById('spamhaus-form') as HTMLFormElement;
+    const input = document.getElementById('domain-input') as HTMLInputElement;
+    const container = document.getElementById('result-container') as HTMLDivElement;
+    const enginesList = document.getElementById('engines-list') as HTMLUListElement;
+    const resultDetails = document.getElementById('result-details') as HTMLDivElement;
+    const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const cooldownMsg = document.getElementById('cooldown-msg') as HTMLDivElement;
+    const backBtn = document.getElementById('back-btn');
+
+    let searchCount = 0;
+    let cooldownTimer: any = null;
+
+    // Manejar el botón de regreso de forma segura
+    backBtn?.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    });
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const domain = input.value.trim().toLowerCase();
+      if (!domain) return;
+
+      searchCount++;
+
+      if (searchCount > 3) {
+        btn.setAttribute('disabled', 'true');
+        input.setAttribute('disabled', 'true');
+        let secondsLeft = 15;
+        cooldownMsg.classList.remove('hidden');
+        cooldownMsg.textContent = `⚠️ Límite de consultas rápidas alcanzado. Espera ${secondsLeft}s para realizar otra consulta.`;
+
+        cooldownTimer = setInterval(() => {
+          secondsLeft--;
+          if (secondsLeft > 0) {
+            cooldownMsg.textContent = `⚠️ Límite de consultas rápidas alcanzado. Espera ${secondsLeft}s para realizar otra consulta.`;
+          } else {
+            clearInterval(cooldownTimer);
+            searchCount = 0;
+            btn.removeAttribute('disabled');
+            input.removeAttribute('disabled');
+            cooldownMsg.classList.add('hidden');
+          }
+        }, 1000);
+        return;
+      }
+
+      btn.textContent = 'Consultando...';
+      btn.setAttribute('disabled', 'true');
+      container.classList.add('hidden');
+
+      try {
+        const response = await fetch('/api/spamhaus-checker', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ domain })
+        });
+        const result = await response.json();
+
+        const gsb = result.googleSafeBrowsing;
+        const pt = result.phishTank;
+        const spamhaus = result.spamhaus;
+
+        let listHtml = '';
+        let remediationHtml = '';
+
+        // 1. Google Safe Browsing
+        if (gsb.listed) {
+          listHtml += `<li class="p-3 bg-slate-950/80 border border-slate-800 text-slate-200 rounded-xl flex items-center justify-between"><span><strong class="text-amber-400">Google Safe Browsing:</strong> Amenaza detectada (${gsb.details})</span><span class="text-xs font-mono text-amber-400 bg-amber-950/40 px-2 py-1 rounded border border-amber-800/50">Listado</span></li>`;
+          remediationHtml += `
+            <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3 font-sans shadow-lg">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span class="font-mono text-slate-200 font-bold text-sm">Motor: Google Safe Browsing</span>
+                <span class="font-mono text-xs text-amber-400">Alerta Activa</span>
+              </div>
+              <p class="text-slate-400 text-xs">El sitio web ha sido marcado por contenido engañoso o distribución de software malicioso.</p>
+              <div class="pt-2">
+                <a 
+                  href="https://search.google.com/search-console/security-issues" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="inline-flex items-center gap-2 px-4 py-2 bg-[#D4AF37] hover:bg-[#c29d31] text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md"
+                >
+                  Solicitar Revisión en Google Search Console ↗
+                </a>
+              </div>
+            </div>
+          `;
+        } else {
+          listHtml += `<li class="p-3 bg-slate-950/80 border border-slate-800 text-slate-300 rounded-xl flex items-center justify-between"><span><strong class="text-slate-100">Google Safe Browsing:</strong> Limpio de malware y phishing.</span><span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded border border-emerald-800/50">Seguro</span></li>`;
+        }
+
+        // 2. PhishTank
+        if (pt.listed) {
+          listHtml += `<li class="p-3 bg-slate-950/80 border border-slate-800 text-slate-200 rounded-xl flex items-center justify-between"><span><strong class="text-amber-400">PhishTank:</strong> ${pt.details}</span><span class="text-xs font-mono text-amber-400 bg-amber-950/40 px-2 py-1 rounded border border-amber-800/50">Listado</span></li>`;
+          remediationHtml += `
+            <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3 font-sans shadow-lg">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span class="font-mono text-slate-200 font-bold text-sm">Motor: PhishTank</span>
+                <span class="font-mono text-xs text-amber-400">Reportado</span>
+              </div>
+              <p class="text-slate-400 text-xs">El dominio o URL cuenta con un registro activo de suplantación de identidad (phishing).</p>
+              <div class="pt-2">
+                <a 
+                  href="https://www.phishtank.com/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="inline-flex items-center gap-2 px-4 py-2 bg-[#D4AF37] hover:bg-[#c29d31] text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md"
+                >
+                  Gestionar Deslistado en PhishTank ↗
+                </a>
+              </div>
+            </div>
+          `;
+        } else {
+          listHtml += `<li class="p-3 bg-slate-950/80 border border-slate-800 text-slate-300 rounded-xl flex items-center justify-between"><span><strong class="text-slate-100">PhishTank:</strong> Sin registros activos de phishing.</span><span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded border border-emerald-800/50">Seguro</span></li>`;
+        }
+
+        // 3. Spamhaus DQS
+        if (spamhaus.listed) {
+          listHtml += `<li class="p-3 bg-slate-950/80 border border-slate-800 text-slate-200 rounded-xl flex items-center justify-between"><span><strong class="text-amber-400">Spamhaus DQS:</strong> Dominio listado en las redes de bloqueo.</span><span class="text-xs font-mono text-amber-400 bg-amber-950/40 px-2 py-1 rounded border border-amber-800/50">Incidencia</span></li>`;
+          if (spamhaus.diagnostics) {
+            spamhaus.diagnostics.forEach((diag: any) => {
+              remediationHtml += `
+                <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3 font-sans shadow-lg">
+                  <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <span class="font-mono text-slate-200 font-bold text-sm">Spamhaus Lista: ${diag.info.list}</span>
+                    <span class="font-mono text-xs text-slate-400">IP Retorno: ${diag.ip}</span>
+                  </div>
+                  <p class="text-slate-400 text-xs">${diag.info.desc}</p>
+                  <div class="pt-2">
+                    <a 
+                      href="${diag.info.delistUrl}" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      class="inline-flex items-center gap-2 px-4 py-2 bg-[#D4AF37] hover:bg-[#c29d31] text-slate-950 font-bold rounded-lg text-xs transition-all shadow-md"
+                    >
+                      Gestionar Exclusión en Spamhaus ↗
+                    </a>
+                  </div>
+                </div>
+              `;
+            });
+          }
+        } else {
+          listHtml += `<li class="p-3 bg-slate-950/80 border border-slate-800 text-slate-300 rounded-xl flex items-center justify-between"><span><strong class="text-slate-100">Spamhaus DQS:</strong> Operativo y limpio en Spamhaus ZEN.</span><span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded border border-emerald-800/50">Seguro</span></li>`;
+        }
+
+        enginesList.innerHTML = listHtml;
+
+        if (remediationHtml !== '') {
+          resultDetails.innerHTML = '<p class="text-xs font-bold uppercase tracking-wider text-slate-300">Detalles y Guías de Remediación:</p>' + remediationHtml;
+        } else {
+          resultDetails.innerHTML = '';
+        }
+
+        container.classList.remove('hidden');
+      } catch (err) {
+        enginesList.innerHTML = `<li class="p-3 bg-slate-950 border border-slate-800 text-slate-300 rounded-xl">Error de conexión con el servidor.</li>`;
+        resultDetails.innerHTML = '';
+        container.classList.remove('hidden');
+      } finally {
+        btn.textContent = 'Consultar Seguridad';
+        if (searchCount <= 3) {
+          btn.removeAttribute('disabled');
+        }
+      }
+    });
+  </script>
+</Layout>

@@ -1,0 +1,294 @@
+﻿---
+// src/pages/tools/email-analyzer.astro
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Analizador de Cabeceras de Correo | Veyxara Core">
+  <main class="w-full min-h-[calc(100vh-76px)] py-12 px-4 sm:px-6 bg-slate-200 border-t border-slate-300 text-neutral-900">
+    <div class="max-w-4xl mx-auto space-y-8">
+
+      <div>
+        <a 
+          href="/tools" 
+          class="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-500 border border-amber-500 rounded-lg text-neutral-900 font-bold text-xs uppercase tracking-wider transition-colors shadow-xs"
+        >
+          <span>←</span> Volver a Herramientas
+        </a>
+      </div>
+
+      <!-- Cabecera Semántica SEO On-Page (Estilo Tarjeta) -->
+      <header class="bg-slate-100 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-semibold text-slate-600">
+          <span class="inline-block px-3 py-1 bg-amber-200/70 border border-amber-300 text-amber-900 rounded-full w-fit">
+            Seguridad de Correo & Forense TI
+          </span>
+          <div class="flex items-center gap-4 font-mono">
+            <span>Actualizado: 22 Sept, 2026</span>
+            <span>Versión: 2.0.4</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="text-3xl md:text-4xl font-display font-bold text-neutral-900 tracking-wide">
+            Analizador de Cabeceras de Correo
+          </h1>
+          <p class="text-neutral-700 font-medium text-base leading-relaxed">
+            Inspecciona los saltos de red detallados (Hops), latencias de entrega y validaciones criptográficas de autenticación SPF, DKIM y DMARC a partir de las cabeceras raw (completas) de mensajes de correo electrónico.
+          </p>
+        </div>
+      </header>
+      
+      <div class="bg-slate-950 border-2 border-slate-900 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <form id="header-form" method="POST" autocomplete="off" class="space-y-4">
+          <div>
+            <label for="rawHeader" class="block text-sm font-bold text-slate-100 mb-2">
+              Cabecera completa del correo (Raw Headers):
+            </label>
+            <textarea 
+              id="rawHeader" 
+              name="rawHeader" 
+              rows="8" 
+              required
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              class="w-full bg-slate-900 border-2 border-slate-800 rounded-xl p-4 text-slate-100 font-mono text-xs focus:ring-2 focus:ring-amber-400 focus:outline-none shadow-inner placeholder-slate-500"
+              placeholder="Pega aquí las cabeceras..."></textarea>
+          </div>
+          <button 
+            type="submit" 
+            id="submit-btn"
+            class="bg-amber-400 hover:bg-amber-500 text-neutral-900 font-bold px-6 py-3 rounded-xl transition-colors text-sm cursor-pointer shadow-md">
+            Analizar Cabecera
+          </button>
+        </form>
+      </div>
+
+      <div id="result-container" class="hidden bg-slate-950 border-2 border-slate-900 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
+        <div class="flex justify-between items-center border-b-2 border-slate-900 pb-4">
+          <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+            <span class="w-3 h-3 bg-amber-400 rounded-full inline-block"></span>
+            Resultados del Análisis
+          </h2>
+          <button 
+            type="button" 
+            id="btn-reset"
+            class="text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer border border-slate-800"
+          >
+            🔄 Analizar otra cabecera
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-mono text-slate-100 bg-slate-900 p-4 rounded-xl border-2 border-slate-800 shadow-inner">
+          <div class="space-y-2">
+            <p><strong class="text-amber-400">De:</strong> <span id="res-sender" class="font-bold">-</span></p>
+            <p><strong class="text-amber-400">Para:</strong> <span id="res-recipient" class="font-bold">-</span></p>
+          </div>
+          <div class="space-y-2">
+            <p><strong class="text-amber-400">Fecha:</strong> <span id="res-date" class="font-bold">-</span></p>
+            <p><strong class="text-amber-400">Saltos Totales:</strong> <span id="res-hops" class="font-bold">-</span></p>
+          </div>
+        </div>
+
+        <div class="border-t-2 border-slate-900 pt-6">
+          <h3 class="text-xs uppercase tracking-wider text-slate-300 font-extrabold mb-3">Trazabilidad de Saltos de Red (Hops & Delays)</h3>
+          <div id="hops-timeline" class="space-y-3 font-mono text-xs">
+            </div>
+        </div>
+
+        <div class="border-t-2 border-slate-900 pt-6">
+          <h3 class="text-xs uppercase tracking-wider text-slate-300 font-extrabold mb-3">Autenticación de Correo</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-center">
+            <div class="bg-slate-900 p-3 rounded-xl border-2 border-slate-800 shadow-inner">
+              <span class="block text-xs font-bold text-slate-400 mb-1">SPF</span>
+              <span id="res-spf" class="font-bold text-sm">-</span>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border-2 border-slate-800 shadow-inner">
+              <span class="block text-xs font-bold text-slate-400 mb-1">DKIM</span>
+              <span id="res-dkim" class="font-bold text-sm">-</span>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border-2 border-slate-800 shadow-inner">
+              <span class="block text-xs font-bold text-slate-400 mb-1">Selector DKIM</span>
+              <span id="res-selector" class="font-bold text-xs text-amber-400 truncate block">-</span>
+            </div>
+            <div class="bg-slate-900 p-3 rounded-xl border-2 border-slate-800 shadow-inner">
+              <span class="block text-xs font-bold text-slate-400 mb-1">DMARC</span>
+              <span id="res-dmarc" class="font-bold text-sm">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de Contenido Técnico y Semántico para Motores de Búsqueda (Google & Bing) -->
+      <section class="bg-slate-100 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 text-slate-800">
+        <h2 class="text-2xl font-bold text-slate-950 border-b border-slate-300 pb-3">
+          Guía Técnica: Análisis Forense de Cabeceras de Correo y Trazabilidad SMTP
+        </h2>
+        
+        <div class="space-y-4 text-sm leading-relaxed text-slate-700">
+          <p>
+            Las cabeceras <span class="italic">raw</span> (completas) de un correo electrónico contienen el rastro criptográfico y de red indispensable para auditar incidentes de seguridad, investigar campañas de <strong class="text-slate-900">phishing</strong> o diagnosticar retrasos graves en la entrega de mensajes corporativos gestionados en plataformas como Exchange On-Premises, Microsoft 365 o Google Workspace.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-6 pt-2">
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Saltos de Red y Retrasos (Received Hops)
+              </h3>
+              <p>
+                Cada servidor MTA intermediario que procesa un correo añade una cabecera <code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">Received:</code> en orden inverso. Analizar estos saltos permite reconstruir la ruta exacta del remitente original, identificar servidores comprometidos y medir los <span class="italic">delays</span> de latencia acumulados en la red.
+              </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Validación Criptográfica DKIM y Selectores
+              </h3>
+              <p>
+                El mecanismo <strong class="text-slate-900">DKIM (DomainKeys Identified Mail)</strong> adjunta una firma digital cifrada al mensaje. El uso de un <span class="italic">Selector DKIM</span> adecuado permite a los servidores receptores verificar la clave pública publicada en el DNS del dominio origen, garantizando que el cuerpo y las cabeceras no fueron alterados en tránsito.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2 mt-4">
+            <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+              <span class="text-amber-600">■</span> Alineación y Resultados SPF / DMARC
+            </h3>
+            <p>
+              Un análisis forense exhaustivo evalúa los resultados de autenticación global (<code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">PASS</code> o <code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">FAIL</code>) para verificar si las políticas <strong class="text-slate-900">SPF</strong> y <strong class="text-slate-900">DMARC</strong> se encuentran debidamente alineadas con el dominio remitente visible en el encabezado <code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">From:</code>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const form = document.getElementById('header-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const resultContainer = document.getElementById('result-container');
+  const btnReset = document.getElementById('btn-reset');
+  const rawHeaderInput = document.getElementById('rawHeader') as HTMLTextAreaElement;
+
+  const resSender = document.getElementById('res-sender');
+  const resRecipient = document.getElementById('res-recipient');
+  const resDate = document.getElementById('res-date');
+  const resHops = document.getElementById('res-hops');
+  const resSpf = document.getElementById('res-spf');
+  const resDkim = document.getElementById('res-dkim');
+  const resSelector = document.getElementById('res-selector');
+  const resDmarc = document.getElementById('res-dmarc');
+  const hopsTimeline = document.getElementById('hops-timeline');
+
+  if (form) form.reset();
+  if (rawHeaderInput) rawHeaderInput.value = '';
+
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted && form) {
+      form.reset();
+      if (rawHeaderInput) rawHeaderInput.value = '';
+      if (resultContainer) resultContainer.classList.add('hidden');
+    }
+  });
+
+  function sanitizeRawHeader(input: string): string {
+    const headerEndIndex = input.indexOf('\r\n\r\n') !== -1 
+      ? input.indexOf('\r\n\r\n') 
+      : input.indexOf('\n\n');
+      
+    if (headerEndIndex !== -1 && input.toLowerCase().includes('received:')) {
+      return input.substring(0, headerEndIndex);
+    }
+    return input;
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!rawHeaderInput) return;
+
+    rawHeaderInput.value = sanitizeRawHeader(rawHeaderInput.value);
+
+    submitBtn.textContent = 'Analizando...';
+    submitBtn.setAttribute('disabled', 'true');
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('/api/analyze-header', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      
+      if (response.ok && resultContainer) {
+        resultContainer.classList.remove('hidden');
+        if (resSender) resSender.textContent = data.metadata.sender;
+        if (resRecipient) resRecipient.textContent = data.metadata.recipient;
+        if (resDate) resDate.textContent = data.metadata.date;
+        if (resHops) resHops.textContent = data.hopsCount;
+
+        const setBadgeStatus = (element: HTMLElement | null, status: string) => {
+          if (!element) return;
+          element.textContent = status;
+          if (status.includes('PASS')) {
+            element.className = 'font-bold text-sm text-emerald-400';
+          } else if (status.includes('FAIL')) {
+            element.className = 'font-bold text-sm text-red-400';
+          } else {
+            element.className = 'font-bold text-sm text-amber-400';
+          }
+        };
+
+        setBadgeStatus(resSpf, data.security.spf);
+        setBadgeStatus(resDkim, data.security.dkim);
+        setBadgeStatus(resDmarc, data.security.dmarc);
+
+        if (resSelector) {
+          resSelector.textContent = data.security.dkimSelector || 'No detectado';
+        }
+
+        if (hopsTimeline) {
+          hopsTimeline.innerHTML = '';
+          data.hops.forEach((hop: any) => {
+            const hopDiv = document.createElement('div');
+            hopDiv.className = 'bg-slate-900 p-3.5 rounded-xl border border-slate-800 space-y-1.5 shadow-inner';
+            hopDiv.innerHTML = `
+              <div class="flex justify-between text-amber-400 font-bold">
+                <span>Salto #${hop.step}</span>
+                <span class="text-slate-300 font-semibold">⏱ Retraso al salto: <span class="text-amber-300 font-extrabold">${hop.delay}s</span></span>
+              </div>
+              <p class="text-slate-200 font-medium break-all">${hop.details}</p>
+              <p class="text-slate-500 text-[10px]">Timestamp: ${hop.timestamp}</p>
+            `;
+            hopsTimeline.appendChild(hopDiv);
+          });
+        }
+
+        resultContainer.scrollIntoView({ behavior: 'smooth' });
+
+      } else {
+        alert(data.error || 'Ocurrió un error inesperado.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error de conexión con el servidor.');
+    } finally {
+      submitBtn.textContent = 'Analizar Cabecera';
+      submitBtn.removeAttribute('disabled');
+    }
+  });
+
+  btnReset?.addEventListener('click', () => {
+    if (resultContainer) resultContainer.classList.add('hidden');
+    if (form) form.reset();
+    if (rawHeaderInput) {
+      rawHeaderInput.value = '';
+      rawHeaderInput.focus();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>

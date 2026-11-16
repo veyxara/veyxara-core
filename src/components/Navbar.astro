@@ -1,0 +1,202 @@
+---
+// src/components/Navbar.astro
+---
+
+<header class="sticky top-0 z-50 h-[76px] w-full bg-[#0d1527] border-b border-slate-800">
+  <nav class="w-full h-full px-4 sm:px-8 lg:px-12 flex items-center justify-between">
+    <!-- LOGO CORPORATIVO VECTORIAL -->
+    <a href="/" class="flex items-center gap-4 py-1">
+      <div class="h-12 w-12 sm:h-[56px] sm:w-[56px] flex items-center justify-center flex-shrink-0">
+        <img 
+          src="/favicon.svg" 
+          alt="Veyxara Core Logo" 
+          width="56"
+          height="56"
+          loading="eager"
+          fetchpriority="high"
+          class="h-full w-full object-contain"
+        />
+      </div>
+      
+      <span class="font-mono font-black tracking-wide text-xl sm:text-2xl md:text-[26px] uppercase inline-flex items-center">
+        <span class="text-white">
+          VEY<span class="inline-block text-cyan-400 scale-135 mx-1">X</span>ARA
+        </span>
+        <span class="text-amber-400 ml-2">CORE</span>
+      </span>
+    </a>
+
+    <!-- Menú Desktop -->
+    <div class="hidden md:flex items-center gap-5 text-slate-300 font-medium">
+      
+      <!-- DROPDOWN 1: INGENIERÍA Y ARQUITECTURA -->
+      <div class="relative group py-2">
+        <button class="flex items-center gap-1.5 hover:text-white transition-colors duration-300">
+          Ingeniería
+          <svg class="w-4 h-4 text-cyan-400 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="absolute left-0 hidden group-hover:block w-48 bg-[#071426] border border-cyan-500/20 rounded-xl shadow-2xl py-2 mt-1 z-50 backdrop-blur-md">
+          <a href="/#trayectoria" class="block px-4 py-2 text-xs text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">Trayectoria</a>
+          <a href="/#enfoque-tecnico" class="block px-4 py-2 text-xs text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">Enfoque Técnico</a>
+          <a href="/#proyectos" class="block px-4 py-2 text-xs text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">Casos Técnicos</a>
+        </div>
+      </div>
+
+      <!-- DROPDOWN 2: RECURSOS Y ECOSISTEMA -->
+      <div class="relative group py-2">
+        <button class="flex items-center gap-1.5 hover:text-white transition-colors duration-300">
+          Recursos
+          <svg class="w-4 h-4 text-cyan-400 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="absolute left-0 hidden group-hover:block w-56 bg-[#071426] border border-cyan-500/20 rounded-xl shadow-2xl py-2 mt-1 z-50 backdrop-blur-md">
+          <a href="/blog" class="block px-4 py-2 text-xs text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">Blog Técnico</a>
+          <a href="/#faq" class="block px-4 py-2 text-xs text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">Preguntas Frecuentes (Q&A)</a>
+          <a href="/wallpapers" class="block px-4 py-2 text-xs text-slate-300 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors">Wallpapers & Ecosistema</a>
+        </div>
+      </div>
+
+      <!-- ENLACE DIRECTO: CONTACTO -->
+      <a href="/#contacto" class="group relative hover:text-white transition-colors duration-300">
+        Contacto
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-400 transition-all duration-300 group-hover:w-full"></span>
+      </a>
+
+      <!-- BOTÓN DE BÚSQUEDA CTRL+K (DESKTOP) -->
+      <button 
+        id="open-cmd-desktop"
+        type="button" 
+        class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-cyan-400 transition-all text-xs font-mono group"
+        aria-label="Buscar en Veyxara"
+      >
+        <svg class="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <span>Buscar...</span>
+        <kbd class="px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded text-[10px] text-slate-400 font-mono">Ctrl K</kbd>
+      </button>
+
+      <a href="/tools" class="px-5 py-2 rounded-md bg-amber-400 hover:bg-amber-500 text-[#020617] font-bold text-sm transition-all shadow-[0_0_15px_rgba(251,191,36,0.3)]">
+        Herramientas
+      </a>
+    </div>
+
+    <!-- Contenedor Acciones Móvil -->
+    <div class="flex items-center gap-2 md:hidden">
+      <button 
+        id="open-cmd-mobile"
+        type="button"
+        class="p-2 text-slate-300 hover:text-cyan-400 focus:outline-none transition-transform active:scale-95"
+        aria-label="Abrir buscador"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </button>
+
+      <button id="sys-menu-btn" type="button" class="text-white p-2 focus:outline-none transition-transform active:scale-95" aria-label="Abrir menú">
+        <svg id="sys-menu-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16 M4 12h16 M17 18h-13" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menú Desplegable Móvil -->
+  <div id="sys-mobile-dropdown" class="hidden md:hidden absolute top-[76px] inset-x-0 bg-[#070b12]/95 bg-[radial-gradient(circle_at_50%_10%,rgba(251,191,36,0.12)_0%,transparent_50%),linear-gradient(to_right,rgba(51,65,85,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(51,65,85,0.3)_1px,transparent_1px)] bg-[size:100%_100%,2rem_2rem,2rem_2rem] max-h-[calc(100vh-76px)] overflow-y-auto border-b border-amber-500/20 px-6 py-6 flex-col text-left z-50 shadow-2xl backdrop-blur-md">
+    
+    <div class="flex flex-col gap-4 text-base">
+      <!-- Bloque 1: Ingeniería -->
+      <div>
+        <span class="text-xs font-mono uppercase tracking-wider text-cyan-400 px-4 mb-1 block">Ingeniería</span>
+        <div class="flex flex-col gap-1">
+          <a href="/#trayectoria" class="sys-link text-slate-200 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-4 rounded-lg transition-all">Trayectoria</a>
+          <a href="/#enfoque-tecnico" class="sys-link text-slate-200 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-4 rounded-lg transition-all">Enfoque Técnico</a>
+          <a href="/#proyectos" class="sys-link text-slate-200 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-4 rounded-lg transition-all">Casos Técnicos</a>
+        </div>
+      </div>
+
+      <!-- Bloque 2: Recursos -->
+      <div class="pt-2 border-t border-slate-800">
+        <span class="text-xs font-mono uppercase tracking-wider text-cyan-400 px-4 mb-1 block">Recursos</span>
+        <div class="flex flex-col gap-1">
+          <a href="/blog" class="sys-link text-slate-200 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-4 rounded-lg transition-all">Blog Técnico</a>
+          <a href="/#faq" class="sys-link text-slate-200 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-4 rounded-lg transition-all">Preguntas Frecuentes (Q&A)</a>
+          <a href="/wallpapers" class="sys-link text-slate-200 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-4 rounded-lg transition-all">Wallpapers & Ecosistema</a>
+        </div>
+      </div>
+
+      <!-- Bloque 3: General -->
+      <div class="pt-2 border-t border-slate-800">
+        <a href="/#contacto" class="sys-link block text-slate-200 hover:text-amber-400 hover:bg-slate-800/40 py-2 px-4 rounded-lg transition-all">Contacto</a>
+      </div>
+    </div>
+
+    <div class="pt-6 border-t border-slate-800/80 mt-6 flex-shrink-0">
+      <a href="/tools" class="sys-link block w-full py-3 px-4 text-center rounded-xl bg-amber-400 text-[#020617] font-bold text-base hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(251,191,36,0.3)]">
+        Herramientas
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  function initNavMenu() {
+    const btn = document.getElementById('sys-menu-btn');
+    const menu = document.getElementById('sys-mobile-dropdown');
+    const icon = document.getElementById('sys-menu-icon');
+
+    const btnCmdDesktop = document.getElementById('open-cmd-desktop');
+    const btnCmdMobile = document.getElementById('open-cmd-mobile');
+
+    const toggleCommandPalette = () => {
+      const backdrop = document.getElementById('cmd-backdrop');
+      const input = document.getElementById('cmd-input');
+      
+      if (backdrop) {
+        backdrop.classList.remove('hidden');
+        if (input) {
+          input.focus();
+        }
+      }
+    };
+
+    btnCmdDesktop?.addEventListener('click', toggleCommandPalette);
+    btnCmdMobile?.addEventListener('click', toggleCommandPalette);
+
+    if (btn && menu && icon) {
+      const freshBtn = btn.cloneNode(true);
+      btn.parentNode?.replaceChild(freshBtn, btn);
+
+      const freshBtnElement = document.getElementById('sys-menu-btn');
+      const freshIconElement = document.getElementById('sys-menu-icon');
+
+      freshBtnElement?.addEventListener('click', () => {
+        const isOpen = menu.classList.toggle('hidden');
+        menu.classList.toggle('flex');
+
+        if (isOpen) {
+          freshIconElement.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16 M4 12h16 M17 18h-13" />`;
+        } else {
+          freshIconElement.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6 M6 6l12 12" />`;
+        }
+      });
+
+      menu.querySelectorAll('.sys-link').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.add('hidden');
+          menu.classList.remove('flex');
+          if (freshIconElement) {
+            freshIconElement.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16 M4 12h16 M17 18h-13" />`;
+          }
+        });
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initNavMenu);
+  document.addEventListener('astro:page-load', initNavMenu);
+</script>

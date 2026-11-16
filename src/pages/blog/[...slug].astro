@@ -1,0 +1,166 @@
+---
+export const prerender = true;
+
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ReactionButtons from '../../components/ReactionButtons.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('recursos');
+  return posts.map((post) => {
+    // Usamos post.id para asegurar un enrutamiento limpio y compatible con Astro v5+
+    const slug = post.id || post.slug;
+    return {
+      params: { slug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const data = post?.data || {};
+const title = data.title || "Artículo del Blog";
+const description = data.description || "Caso práctico de infraestructura TI y hardening.";
+const category = data.category || "Infraestructura TI";
+
+// Formatear la fecha de forma limpia y legible si existe
+let formattedDate = data.pubDate || "";
+if (formattedDate) {
+  try {
+    const dateObj = new Date(formattedDate);
+    if (!isNaN(dateObj.getTime())) {
+      formattedDate = dateObj.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+  } catch (e) {
+    // Si falla el parseo, se mantiene el string original
+  }
+}
+
+const author = data.author || "Alfredo Arévalo";
+const enfoque = data.enfoque || "";
+const image = data.image || "/images/og-image.png";
+
+const { Content } = await render(post);
+---
+
+<Layout 
+  title={title} 
+  description={description} 
+  variant="blog"
+  blogCategory={category}
+  pubDate={formattedDate}
+  author={author}
+  enfoque={enfoque}
+  ogImage={image}
+  bgColor="#cbd5e1"
+>
+  <!-- CONTENIDO PRINCIPAL DEL BLOG -->
+  <article class="blog-content text-slate-800 space-y-6 max-w-none">
+    <Content />
+  </article>
+
+  <!-- SECCIÓN DE REACCIONES -->
+  <div class="mt-12 pt-6 border-t border-slate-200">
+    <ReactionButtons articleTitle={title} />
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const article = document.querySelector('article');
+    if (article) {
+      article.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
+  });
+</script>
+
+<style is:global>
+  article, .blog-content {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .blog-content pre, 
+  .blog-content code {
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+  }
+
+  .blog-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 0.5rem;
+  }
+  .blog-content h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .blog-content p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #334155;
+    margin-bottom: 1.25rem;
+  }
+  .blog-content img {
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin: 1.5rem auto;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  .blog-content pre {
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+  .blog-content code {
+    background-color: #f1f5f9;
+    color: #d97706;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  .blog-content pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+  }
+  .blog-content hr {
+    border-color: #cbd5e1;
+    margin: 2rem 0;
+  }
+  .blog-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+  .blog-content th, .blog-content td {
+    border: 1px solid #cbd5e1;
+    padding: 0.75rem;
+    text-align: left;
+  }
+  .blog-content th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #0f172a;
+  }
+</style>

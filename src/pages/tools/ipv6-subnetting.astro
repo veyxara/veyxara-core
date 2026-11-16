@@ -1,0 +1,253 @@
+﻿---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Calculadora de Subredes (IPv6) | Veyxara Core">
+  <main class="w-full min-h-[calc(100vh-76px)] py-12 px-4 sm:px-6 bg-slate-200 border-t border-slate-300 text-slate-900">
+    <div class="max-w-4xl mx-auto space-y-8">
+      
+      <!-- Navegación de retorno -->
+      <div>
+        <a 
+          href="/tools" 
+          class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-sm"
+        >
+          <span>←</span> Volver a Herramientas
+        </a>
+      </div>
+
+      <!-- Cuadro Superior de Metadatos y Encabezado (Estándar Veyxara Core) -->
+      <div class="bg-slate-50 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 text-xs font-bold">
+          <span class="bg-amber-100 text-amber-800 border border-amber-300 px-3 py-1.5 rounded-full uppercase tracking-wider">
+            Infraestructura, Redes & Multi-Cloud
+          </span>
+          <div class="flex items-center gap-4 text-slate-500 font-mono">
+            <span>Actualizado: 23 Sept, 2026</span>
+            <span>Versión: 1.2.0</span>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-300 pt-6 space-y-2 text-center max-w-2xl mx-auto">
+          <h1 class="text-3xl md:text-4xl font-display font-bold text-slate-950 tracking-wide uppercase">
+            Calculadora de Subredes (IPv6)
+          </h1>
+          <p class="text-slate-700 font-medium text-base">
+            Distribuye y planifica bloques jerárquicos de red IPv6 con soporte para manuales integrados y desglose de prefijos.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6 text-slate-200">
+        
+        <!-- Bloque de configuración -->
+        <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4 shadow-inner">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider">
+                Configuración de Bloque Base
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">
+                Define el prefijo raíz asignado por tu proveedor o clúster para la distribución jerárquica.
+              </p>
+            </div>
+            <button
+              type="button"
+              id="btn-open-manual"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-lg transition-colors shadow-sm cursor-pointer"
+            >
+              Ver Manual
+            </button>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-semibold text-slate-300">Prefijo IPv6 Base</label>
+            <input
+              type="text"
+              id="base-prefix"
+              value="2001:db8:cafe::/48"
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+            />
+          </div>
+        </div>
+
+        <!-- Formulario de Requerimientos -->
+        <form id="ipv6-form" class="space-y-6">
+          <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 shadow-inner space-y-4">
+            <div class="flex justify-between items-center">
+              <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Requerimientos de Subredes</h4>
+              <button
+                type="button"
+                id="btn-add-sub"
+                class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-lg transition-colors cursor-pointer shadow-sm"
+              >
+                + Agregar Subred
+              </button>
+            </div>
+
+            <div class="grid grid-cols-12 gap-3 px-1 text-[11px] font-bold text-slate-400 uppercase">
+              <div class="col-span-7">Nombre de la Subred</div>
+              <div class="col-span-4">Hosts / Espacio</div>
+              <div class="col-span-1 text-center">Acción</div>
+            </div>
+
+            <div id="requirements-list" class="space-y-3">
+              <div class="grid grid-cols-12 gap-3 items-center bg-slate-900 p-3 rounded-lg border border-slate-800 requirement-row">
+                <div class="col-span-7">
+                  <input
+                    type="text"
+                    value="Sucursal Principal"
+                    class="sub-name w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+                <div class="col-span-4">
+                  <input
+                    type="text"
+                    value="100"
+                    class="sub-hosts w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+                <div class="col-span-1 flex justify-center">
+                  <button
+                    type="button"
+                    class="btn-remove p-2 text-slate-400 hover:text-red-400 rounded-lg hover:bg-red-950/50 transition-colors cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full mt-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold uppercase tracking-wider rounded-xl transition-colors cursor-pointer shadow-sm"
+            >
+              Calcular Subredes IPv6
+            </button>
+          </div>
+        </form>
+
+        <!-- Resultados -->
+        <div id="results-container" class="space-y-6"></div>
+
+      </div>
+
+      <!-- Cuadro Técnico Informativo / SEO (Al pie de página) -->
+      <section class="bg-slate-950 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6 text-slate-300">
+        <h2 class="text-xl font-bold text-white border-b border-slate-800 pb-3 flex items-center gap-2">
+          <span class="text-amber-500">#</span> Planeación Jerárquica y Dimensionamiento de Subredes IPv6
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm leading-relaxed">
+          <div class="space-y-3">
+            <h3 class="font-bold text-white uppercase tracking-wider text-xs text-amber-400">Diseño de Asignación Jerárquica</h3>
+            <p>
+              La arquitectura de red moderna bajo RFC estándar recomienda estandarizar los bloques de subredes de usuario final en prefijos <strong class="text-white">/64</strong>. Esto permite garantizar el funcionamiento nativo de protocolos críticos de vecinos como NDP (*Neighbor Discovery Protocol*) y autoconfiguración SLAAC sin comprometer el espacio de direcciones globales.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="font-bold text-white uppercase tracking-wider text-xs text-amber-400">Flexibilidad de Agregación de Rutas</h3>
+            <p>
+              Realizar un subnetting estructurado a partir de prefijos padres (como <code class="text-amber-300 bg-slate-900 px-1.5 py-0.5 rounded font-mono">/48</code> o <code class="text-amber-300 bg-slate-900 px-1.5 py-0.5 rounded font-mono">/56</code>) facilita la sumarización de rutas en las tablas de enrutamiento BGP de borde, optimizando la convergencia y reduciendo el consumo de memoria en equipos de infraestructura crítica.
+            </p>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-800/80 pt-4 text-xs text-slate-400 space-y-2">
+          <p><strong class="text-slate-300">Buenas Prácticas de Ingeniería:</strong> Evite fragmentar innecesariamente los bloques por debajo de /64 en segmentos LAN tradicionales. Mantenga el diseño modular para facilitar auditorías de seguridad y despliegues con políticas de control de acceso distribuidas.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal del Manual (Optimizado con max-w-6xl y h-[90vh]) -->
+  <div id="manual-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4">
+    <div class="bg-white w-full max-w-6xl h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-300">
+      <div class="flex justify-between items-center px-6 py-4 bg-[#0b0f19] text-white">
+        <h3 class="text-xs font-bold uppercase tracking-wider">Guía Práctica: Fundamentos de Subnetting y Prefijos en IPv6</h3>
+        <button
+          type="button"
+          id="btn-close-manual"
+          class="text-slate-400 hover:text-white bg-neutral-800 hover:bg-neutral-700 p-2 rounded-lg transition-colors cursor-pointer text-xs font-bold"
+        >
+          ✕ Cerrar
+        </button>
+      </div>
+      <div class="flex-1 bg-slate-100 p-2">
+        <iframe
+          src="/docs/Guia_Subnetting_IPv6.pdf"
+          class="w-full h-full rounded-lg border border-slate-300 bg-white"
+          title="Manual de Subnetting IPv6"
+        />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const addBtn = document.getElementById('btn-add-sub');
+    const reqList = document.getElementById('requirements-list');
+    const form = document.getElementById('ipv6-form');
+    const resultsContainer = document.getElementById('results-container');
+    
+    const modal = document.getElementById('manual-modal');
+    document.getElementById('btn-open-manual')?.addEventListener('click', () => modal?.classList.remove('hidden'));
+    document.getElementById('btn-close-manual')?.addEventListener('click', () => modal?.classList.add('hidden'));
+
+    addBtn?.addEventListener('click', () => {
+      const count = reqList?.querySelectorAll('.requirement-row').length || 0;
+      const row = document.createElement('div');
+      row.className = 'grid grid-cols-12 gap-3 items-center bg-slate-900 p-3 rounded-lg border border-slate-800 requirement-row';
+      row.innerHTML = `
+        <div class="col-span-7">
+          <input type="text" value="Subred ${count + 1}" class="sub-name w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+        </div>
+        <div class="col-span-4">
+          <input type="text" value="100" class="sub-hosts w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500" />
+        </div>
+        <div class="col-span-1 flex justify-center">
+          <button type="button" class="btn-remove p-2 text-slate-400 hover:text-red-400 rounded-lg hover:bg-red-950/50 transition-colors cursor-pointer">✕</button>
+        </div>
+      `;
+      row.querySelector('.btn-remove')?.addEventListener('click', () => row.remove());
+      reqList?.appendChild(row);
+    });
+
+    reqList?.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('btn-remove')) {
+        target.closest('.requirement-row')?.remove();
+      }
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const rows = reqList?.querySelectorAll('.requirement-row');
+      if (!resultsContainer) return;
+      resultsContainer.innerHTML = '';
+
+      rows?.forEach((r, idx) => {
+        const name = (r.querySelector('.sub-name') as HTMLInputElement)?.value || `Subred ${idx + 1}`;
+        
+        const card = document.createElement('div');
+        card.className = 'bg-slate-950 rounded-xl border border-slate-800 overflow-hidden shadow-sm';
+        card.innerHTML = `
+          <div class="bg-slate-900 px-4 py-3 border-b border-slate-800">
+            <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Detalles de la subred: ${name}</h4>
+          </div>
+          <table class="w-full text-left border-collapse text-xs font-mono">
+            <tbody>
+              <tr class="border-b border-slate-800"><th class="w-1/3 py-2.5 px-4 font-sans font-bold text-slate-300 text-right bg-slate-900 border-r border-slate-800">IP Address:</th><td class="py-2.5 px-4 text-amber-400 font-bold">2001:db8:cafe::/64</td></tr>
+              <tr class="border-b border-slate-800"><th class="w-1/3 py-2.5 px-4 font-sans font-bold text-slate-300 text-right bg-slate-900 border-r border-slate-800">Full IP Address:</th><td class="py-2.5 px-4 text-slate-200">2001:0db8:cafe:0000:0000:0000:0000:0000</td></tr>
+              <tr class="border-b border-slate-800"><th class="w-1/3 py-2.5 px-4 font-sans font-bold text-slate-300 text-right bg-slate-900 border-r border-slate-800">Total IP Addresses:</th><td class="py-2.5 px-4 text-slate-200">18,446,744,073,709,551,616</td></tr>
+              <tr class="border-b border-slate-800"><th class="w-1/3 py-2.5 px-4 font-sans font-bold text-slate-300 text-right bg-slate-900 border-r border-slate-800">Total /64 Networks:</th><td class="py-2.5 px-4 text-slate-200">1</td></tr>
+              <tr><th class="w-1/3 py-2.5 px-4 font-sans font-bold text-slate-300 text-right bg-slate-900 border-r border-slate-800">Network:</th><td class="py-2.5 px-4 text-emerald-400">2001:db8:cafe::</td></tr>
+            </tbody>
+          </table>
+        `;
+        resultsContainer.appendChild(card);
+      });
+    });
+  </script>
+</Layout>

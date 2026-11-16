@@ -1,0 +1,271 @@
+---
+// src/layouts/Layout.astro
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Feedback from '../components/Feedback.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+import Analytics from '@vercel/analytics/astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  variant?: 'home' | 'legal' | 'tool' | 'blog';
+  ogImage?: string;
+  bgColor?: string;
+  lcpImage?: string;
+  toolCategory?: string;
+  toolLastUpdated?: string;
+  toolVersion?: string;
+  blogCategory?: string;
+  pubDate?: string;
+  updatedDate?: string;
+  author?: string;
+  enfoque?: string;
+}
+
+const { 
+  title, 
+  description = "Ingeniería de Infraestructura y Seguridad IT. Evaluaciones técnicas y hardening sin compromiso.", 
+  ogImage = '/images/og-image.png',
+  bgColor = '#cbd5e1',
+  lcpImage,
+  variant,
+  toolCategory,
+  toolLastUpdated,
+  toolVersion,
+  blogCategory,
+  pubDate,
+  updatedDate,
+  author = "Alfredo Arévalo",
+  enfoque
+} = Astro.props;
+
+const siteURL = Astro.site ? Astro.site.origin : 'https://veyxara.com';
+const canonicalURL = new URL(Astro.url.pathname, siteURL);
+const fullOgImageUrl = new URL(ogImage, siteURL).href;
+
+const pageTitle = title.includes('Veyxara') ? title : `${title} | Veyxara`;
+const cleanTitle = title.split('|')[0].trim();
+
+// Función defensiva para prevenir "Invalid time value" en tiempo de build
+const toSafeISO = (dateStr?: string) => {
+  if (!dateStr) return undefined;
+  const parsedDate = new Date(dateStr);
+  return !isNaN(parsedDate.getTime()) ? parsedDate.toISOString() : undefined;
+};
+
+const isoPubDate = toSafeISO(pubDate);
+const isoUpdatedDate = toSafeISO(updatedDate);
+
+const schemaOrgData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteURL}/#organization`,
+      "name": "Veyxara",
+      "alternateName": ["Veyxara Core", "Veyxara Tech", "Veyxara Systems", "Veyxara Cloud", "Veyxara Digital"],
+      "url": siteURL,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${siteURL}/favicon-192x192.png`
+      },
+      "description": "Firma de consultoría e ingeniería especializada en infraestructura crítica, ecosistema Microsoft, Nivel 3 y SecOps.",
+      "address": {
+        "@type": "PostalAddress",
+        "@addressLocality": "Engativá, Bogotá",
+        "@addressRegion": "Cundinamarca",
+        "@addressCountry": "CO"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/veyxara"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteURL}/#website`,
+      "url": siteURL,
+      "name": "Veyxara",
+      "description": description,
+      "publisher": {
+        "@id": `${siteURL}/#organization`
+      },
+      "inLanguage": "es-CO"
+    },
+    ...(variant === 'blog' ? [{
+      "@type": "TechArticle",
+      "@id": `${canonicalURL}#article`,
+      "isPartOf": {
+        "@id": `${siteURL}/#website`
+      },
+      "headline": cleanTitle,
+      "description": description,
+      "image": fullOgImageUrl,
+      ...(isoPubDate && { "datePublished": isoPubDate }),
+      ...(isoUpdatedDate && { "dateModified": isoUpdatedDate }),
+      "author": {
+        "@type": "Person",
+        "name": author
+      },
+      "publisher": {
+        "@id": `${siteURL}/#organization`
+      },
+      "mainEntityOfPage": canonicalURL
+    }] : []),
+    ...(variant === 'tool' ? [{
+      "@type": "WebApplication",
+      "@id": `${canonicalURL}#webapp`,
+      "name": cleanTitle,
+      "url": canonicalURL,
+      "applicationCategory": toolCategory || "DeveloperApplication",
+      "operatingSystem": "All",
+      "softwareVersion": toolVersion || "1.0.0"
+    }] : [])
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    
+    {lcpImage && (
+      <link rel="preload" href={lcpImage} as="image" type="image/webp" />
+    )}
+
+    <!-- FAVICONS ESTANDARIZADOS PARA GOOGLEBOT -->
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="shortcut icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <meta property="og:type" content={variant === 'blog' ? 'article' : 'website'} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullOgImageUrl} />
+    {pubDate && <meta property="article:published_time" content={pubDate} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImageUrl} />
+
+    <!-- Verificación de Dominio Pinterest -->
+    <meta name="p:domain_verify" content="b9e7d6a2cde11db4c0d989a139667fd0" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schemaOrgData)} />
+
+    <style is:global>
+      @media (max-width: 768px) {
+        section[id], div[id] {
+          scroll-margin-top: 90px;
+        }
+      }
+    </style>
+  </head>
+  
+  <body 
+    class="text-slate-900 selection:bg-amber-500/30 min-h-screen flex flex-col antialiased" 
+    style={`background-color: ${bgColor} !important;`}
+  >
+    <Navbar />
+    
+    <main class="flex-grow w-full">
+      {variant === 'tool' && (
+        <div class="max-w-5xl mx-auto pt-12 px-4 sm:px-6">
+          <div class="mb-6">
+            <a href="/tools" class="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-500 border border-amber-500 rounded-lg text-neutral-900 font-bold text-xs uppercase tracking-wider transition-colors shadow-xs">
+              <span>←</span> Volver al Blog / Herramientas
+            </a>
+          </div>
+
+          <header class="space-y-4 max-w-3xl mx-auto bg-slate-200 border-2 border-slate-400 p-6 sm:p-8 rounded-2xl shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-600 border-b border-slate-300 pb-4">
+              {toolCategory && (
+                <span class="bg-indigo-100 text-indigo-800 font-medium px-2.5 py-1 rounded-full border border-indigo-200">
+                  {toolCategory}
+                </span>
+              )}
+              <div class="flex items-center gap-4 font-mono text-slate-600 ml-auto">
+                {toolLastUpdated && <span>Actualizado: <time datetime={toolLastUpdated}>{toolLastUpdated}</time></span>}
+                {toolVersion && <span>Versión: {toolVersion}</span>}
+              </div>
+            </div>
+
+            <div class="space-y-2 text-center">
+              <h1 class="text-3xl md:text-4xl font-display font-bold text-neutral-900 tracking-wide">
+                {cleanTitle}
+              </h1>
+              <p class="text-neutral-700 font-medium text-base leading-relaxed">
+                {description}
+              </p>
+            </div>
+          </header>
+        </div>
+      )}
+
+      {variant === 'blog' ? (
+        <div class="max-w-4xl mx-auto pt-12 px-4 sm:px-6 w-full">
+          <div class="mb-6">
+            <a href="/blog" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-900 text-amber-400 border border-slate-700 rounded-lg font-bold text-xs uppercase tracking-wider transition-colors shadow-xs">
+              <span>←</span> Volver al Blog
+            </a>
+          </div>
+
+          <header class="space-y-4 bg-slate-200 border border-slate-300 p-6 sm:p-8 rounded-xl shadow-xs mb-8 w-full">
+            {blogCategory && (
+              <div>
+                <span class="bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded-full border border-amber-300 uppercase tracking-wider text-[10px]">
+                  {blogCategory}
+                </span>
+              </div>
+            )}
+
+            <div class="space-y-3 text-left">
+              <h1 class="text-2xl sm:text-4xl font-display font-bold text-neutral-900 tracking-tight leading-tight">
+                {cleanTitle}
+              </h1>
+              <p class="text-neutral-700 text-sm sm:text-base leading-relaxed">
+                {description}
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-300 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-700 font-mono">
+              {pubDate && <span>📅 Publicado el: {pubDate}</span>}
+              {author && <span>👤 {author}</span>}
+              <span>💻 VEYXARA</span>
+            </div>
+
+            {enfoque && (
+              <div class="text-xs text-slate-700 font-mono pt-1">
+                <strong>Enfoque:</strong> {enfoque}
+              </div>
+            )}
+          </header>
+
+          <div class="mb-16 w-full bg-white p-6 sm:p-10 rounded-xl border border-slate-200 shadow-xs">
+            <slot />
+          </div>
+        </div>
+      ) : (
+        <slot />
+      )}
+    </main>
+    
+    <Feedback />
+    <Footer />
+    <CommandPalette />
+    <Analytics />
+  </body>
+</html>

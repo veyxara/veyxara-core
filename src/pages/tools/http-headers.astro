@@ -1,0 +1,262 @@
+﻿---
+// src/pages/tools/http-headers.astro
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Analizador de Cabeceras HTTP | Veyxara Core">
+  <main class="w-full min-h-[calc(100vh-76px)] py-12 px-4 sm:px-6 bg-slate-200 border-t border-slate-300 text-neutral-900">
+    <div class="max-w-4xl mx-auto space-y-8">
+      
+      <div>
+        <a 
+          href="/tools" 
+          class="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-500 border border-amber-500 rounded-lg text-neutral-900 font-bold text-xs uppercase tracking-wider transition-colors shadow-xs"
+        >
+          <span>←</span> Volver a Herramientas
+        </a>
+      </div>
+
+      <!-- Cabecera Semántica SEO On-Page (Estilo Tarjeta) -->
+      <header class="bg-slate-100 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-semibold text-slate-600">
+          <span class="inline-block px-3 py-1 bg-amber-200/70 border border-amber-300 text-amber-900 rounded-full w-fit">
+            Seguridad Web & Hardening HTTP
+          </span>
+          <div class="flex items-center gap-4 font-mono">
+            <span>Actualizado: 23 Sept, 2026</span>
+            <span>Versión: 2.1.1</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="text-3xl md:text-4xl font-display font-bold text-neutral-900 tracking-wide">
+            Analizador de Cabeceras HTTP & Auditoría Web
+          </h1>
+          <p class="text-neutral-700 font-medium text-base leading-relaxed">
+            Inspecciona y audita las políticas de seguridad en encabezados de respuesta (HTTP Response Headers), evaluando directivas de hardening esenciales como CSP, HSTS, X-Frame-Options y politicas de cookies en cualquier servidor web.
+          </p>
+        </div>
+      </header>
+
+      <div class="bg-slate-950 border-2 border-slate-900 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <form id="header-form" autocomplete="off" class="space-y-4">
+          <div class="space-y-2">
+            <label for="target-url" class="block text-sm font-bold text-slate-100">
+              URL o Dominio del Servidor
+            </label>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <input 
+                type="text" 
+                id="target-url" 
+                required 
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="ejemplo.com o https://ejemplo.com" 
+                class="flex-1 bg-slate-900 border-2 border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-400 font-mono text-xs shadow-inner placeholder-slate-500"
+              />
+              <button 
+                type="submit" 
+                id="submit-btn"
+                class="bg-amber-400 hover:bg-amber-500 text-neutral-900 font-bold px-6 py-3 rounded-xl transition-colors text-sm cursor-pointer shadow-md"
+              >
+                Analizar
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div id="results-container" class="hidden space-y-6 pt-6 border-t-2 border-slate-900">
+          
+          <!-- Resumen de Calificación -->
+          <div id="audit-summary" class="bg-slate-900 border-2 border-slate-800 rounded-xl p-5 flex items-center justify-between shadow-inner">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Calificación de Seguridad</span>
+              <div class="text-xs text-slate-300 font-medium mt-0.5">Basado en cabeceras de hardening recomendadas</div>
+            </div>
+            <div id="grade-badge" class="w-16 h-16 rounded-xl flex items-center justify-center text-3xl font-extrabold shadow-sm text-white">
+              -
+            </div>
+          </div>
+
+          <!-- Cabeceras Faltantes con Explicación Detallada -->
+          <div class="bg-slate-900 border-2 border-slate-800 rounded-xl p-5 space-y-4 shadow-inner">
+            <h3 class="text-sm uppercase tracking-wider text-slate-300 font-extrabold border-b-2 border-slate-800 pb-3">
+              Cabeceras de Seguridad Faltantes (Missing Headers)
+            </h3>
+            <div id="missing-headers-list" class="space-y-4 divide-y divide-slate-800">
+              <!-- Dinámico -->
+            </div>
+          </div>
+
+          <!-- Todas las cabeceras devueltas -->
+          <div class="space-y-3">
+            <h3 class="text-sm uppercase tracking-wider text-slate-300 font-extrabold">Cabeceras de Respuesta HTTP del Servidor</h3>
+            <div id="results-content" class="bg-slate-900 border-2 border-slate-800 rounded-xl p-4 font-mono text-xs text-slate-200 space-y-1.5 shadow-inner break-all whitespace-pre-wrap">
+              <!-- Resultados dinámicos -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Sección de Contenido Técnico y Semántico para Motores de Búsqueda (Google & Bing) -->
+      <section class="bg-slate-100 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 text-slate-800">
+        <h2 class="text-2xl font-bold text-slate-950 border-b border-slate-300 pb-3">
+          Guía Técnica: Endurecimiento (Hardening) de Cabeceras de Respuesta HTTP
+        </h2>
+        
+        <div class="space-y-4 text-sm leading-relaxed text-slate-700">
+          <p>
+            Las cabeceras de respuesta HTTP constituyen la primera línea de defensa en aplicaciones y servicios web. Una adecuada configuración de estos encabezados en servidores como <strong class="text-slate-900">Nginx, Apache HTTP Server o Microsoft IIS</strong> instruye explícitamente al navegador del cliente sobre las restricciones de ejecución, reduciendo drásticamente la superficie de ataque frente a vectores comunes en la OWASP Top 10.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-6 pt-2">
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Content Security Policy (CSP)
+              </h3>
+              <p>
+                Mitiga eficientemente ataques de inyección como <strong class="text-slate-900">Cross-Site Scripting (XSS)</strong> y *Data Injection*. Establece una lista blanca explícita de orígenes seguros desde los cuales el navegador tiene permitido cargar scripts, estilos, recursos multimedia o marcos incrustados.
+              </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Strict-Transport-Security (HSTS)
+              </h3>
+              <p>
+                Garantiza que toda interacción con el dominio se realice únicamente a través de conexiones cifradas <strong class="text-slate-900">HTTPS</strong>. Previene ataques de degradación de protocolo (*Downgrade Attacks*) y secuestro de cookies mediante intercepción Man-in-the-Middle (MitM).
+              </p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6 pt-2">
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Protección de Enmarcado y MIME Sniffing
+              </h3>
+              <p>
+                <code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">X-Frame-Options</code> restringe si un sitio puede ser incrustado en etiquetas <span class="italic">iframe</span>, previniendo ataques de <strong class="text-slate-900">Clickjacking</strong>. Por otro lado, <code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">X-Content-Type-Options: nosniff</code> obliga al navegador a respetar estrictamente el tipo MIME declarado, evitando la ejecución accidental de scripts disfrazados de imágenes u otros activos.
+              </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Privacidad y Permisos (Referrer & Permissions)
+              </h3>
+              <p>
+                <code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">Referrer-Policy</code> controla qué información contextual de la URL se transmite en las peticiones salientes. Asimismo, <code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">Permissions-Policy</code> restringe el acceso de la aplicación a APIs sensibles del cliente como la cámara, micrófono o la geolocalización.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const descriptions: Record<string, string> = {
+      'content-security-policy': 'Content Security Policy es una medida efectiva para proteger tu sitio de ataques XSS. Al listar orígenes aprobados de contenido, evitas que el navegador cargue recursos maliciosos.',
+      'x-frame-options': 'X-Frame-Options indica al navegador si deseas permitir que tu sitio sea enmarcado o no. Previene ataques de clickjacking. Valor recomendado: "X-Frame-Options: SAMEORIGIN".',
+      'x-content-type-options': 'X-Content-Type-Options evita que el navegador intente adivinar el tipo MIME (MIME-sniffing) y lo obliga a ceñirse al declarado. El único valor válido es "nosniff".',
+      'referrer-policy': 'Referrer Policy permite controlar cuánta información incluye el navegador en las navegaciones hacia fuera de un documento y debe ser configurada en todos los sitios.',
+      'permissions-policy': 'Permissions Policy permite a un sitio controlar qué características y APIs del navegador pueden ser utilizadas.'
+    };
+
+    const form = document.getElementById('header-form') as HTMLFormElement;
+    const inputUrl = document.getElementById('target-url') as HTMLInputElement;
+    const resultsContainer = document.getElementById('results-container');
+    const resultsContent = document.getElementById('results-content');
+    const gradeBadge = document.getElementById('grade-badge');
+    const missingHeadersList = document.getElementById('missing-headers-list');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    if (form) form.reset();
+    if (inputUrl) inputUrl.value = '';
+
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted && form) {
+        form.reset();
+        if (inputUrl) inputUrl.value = '';
+        if (resultsContainer) resultsContainer.classList.add('hidden');
+      }
+    });
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let rawUrl = inputUrl.value.trim();
+      if (!rawUrl) return;
+
+      // Saneamiento automático: si no incluye protocolo, anteponemos https://
+      if (!/^https?:\/\//i.test(rawUrl)) {
+        rawUrl = 'https://' + rawUrl;
+        inputUrl.value = rawUrl; // Refleja el cambio amigablemente en el input
+      }
+
+      submitBtn.textContent = 'Analizando...';
+      submitBtn.setAttribute('disabled', 'true');
+
+      try {
+        const res = await fetch(`/api/check-headers?url=${encodeURIComponent(rawUrl)}`);
+        const data = await res.json();
+
+        resultsContainer?.classList.remove('hidden');
+
+        if (!res.ok) {
+          if (resultsContent) {
+            resultsContent.innerHTML = `<div class="text-red-400 font-bold">Error: ${data.error}</div>`;
+          }
+          return;
+        }
+
+        const grade = data.audit.grade;
+        if (gradeBadge) {
+          gradeBadge.textContent = grade;
+          let colorClass = 'bg-emerald-500 text-neutral-900';
+          if (grade === 'B') colorClass = 'bg-blue-500 text-neutral-900';
+          if (grade === 'C') colorClass = 'bg-amber-400 text-neutral-900';
+          if (grade === 'D') colorClass = 'bg-orange-500 text-neutral-900';
+          if (grade === 'F') colorClass = 'bg-red-500 text-neutral-900';
+          gradeBadge.className = `w-16 h-16 rounded-xl flex items-center justify-center text-3xl font-extrabold shadow-sm ${colorClass}`;
+        }
+
+        if (missingHeadersList) {
+          const missing = data.audit.missingHeaders || [];
+          if (missing.length === 0) {
+            missingHeadersList.innerHTML = `<div class="text-xs font-bold text-emerald-400 py-2">¡Excelente! El sitio cuenta con todas las cabeceras de seguridad críticas evaluadas.</div>`;
+          } else {
+            missingHeadersList.innerHTML = missing.map((h: string) => {
+              const desc = descriptions[h] || 'Cabecera de seguridad recomendada para mejorar el endurecimiento del servidor.';
+              return `
+                <div class="pt-4 first:pt-0 grid grid-cols-1 sm:grid-cols-3 gap-2 items-start">
+                  <span class="font-bold text-red-400 text-sm">${h}</span>
+                  <p class="sm:col-span-2 text-xs text-slate-300 leading-relaxed">${desc}</p>
+                </div>
+              `;
+            }).join('');
+          }
+        }
+
+        let headersHtml = `<div class="text-emerald-400 font-bold pb-2">✓ Estado HTTP: ${data.status} ${data.statusText}</div>`;
+        for (const [key, value] of Object.entries(data.headers)) {
+          headersHtml += `<div><span class="font-bold text-amber-400">${key}:</span> ${value}</div>`;
+        }
+
+        if (resultsContent) {
+          resultsContent.innerHTML = headersHtml;
+        }
+
+      } catch (error) {
+        if (resultsContent) {
+          resultsContent.innerHTML = `<div class="text-red-400 font-bold">Error crítico al procesar la petición.</div>`;
+        }
+      } finally {
+        submitBtn.textContent = 'Analizar';
+        submitBtn.removeAttribute('disabled');
+      }
+    });
+  </script>
+</Layout>

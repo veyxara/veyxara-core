@@ -1,0 +1,290 @@
+﻿---
+// src/pages/tools/dns-health-audit.astro
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Auditoría de Salud DNS y Correo | Veyxara Core">
+  <main class="w-full min-h-[calc(100vh-76px)] py-12 px-4 sm:px-6 bg-slate-200 border-t border-slate-300 text-slate-900">
+    <div class="max-w-4xl mx-auto space-y-8">
+      
+      <div>
+        <a 
+          href="/tools" 
+          class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-sm"
+        >
+          <span>←</span> Volver a Herramientas
+        </a>
+      </div>
+
+      <!-- Cabecera Semántica SEO On-Page (Estilo Tarjeta Solicitado) -->
+      <header class="bg-slate-100 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-semibold text-slate-600">
+          <span class="inline-block px-3 py-1 bg-amber-200/70 border border-amber-300 text-amber-900 rounded-full w-fit">
+            Infraestructura, Seguridad & DNS
+          </span>
+          <div class="flex items-center gap-4 font-mono">
+            <span>Actualizado: 22 Sept, 2026</span>
+            <span>Versión: 2.1.0</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="text-3xl md:text-4xl font-display font-bold text-slate-950 tracking-wide">
+            Auditoría de Salud DNS y Correo
+          </h1>
+          <p class="text-slate-700 font-medium text-base leading-relaxed">
+            Analiza de forma integral la salud general de tus servidores de nombres (NS), registros de intercambio de correo (MX) y políticas de autenticación y seguridad de dominios (SPF, DMARC) bajo normativas RFC en un solo escaneo rápido.
+          </p>
+        </div>
+      </header>
+
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <form id="audit-form" class="flex flex-col sm:flex-row gap-3">
+          <input 
+            type="text" 
+            id="domain-input" 
+            placeholder="ej. midominio.com" 
+            required
+            class="flex-1 px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl focus:outline-none focus:border-amber-500 font-medium text-white placeholder-slate-500 shadow-inner"
+          />
+          <button 
+            type="submit"
+            class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-xl transition-colors shadow-sm cursor-pointer"
+          >
+            Iniciar Auditoría
+          </button>
+        </form>
+      </div>
+
+      <div id="results-container" class="space-y-4">
+        <h2 class="text-xl font-bold text-slate-900">Resultado del Escaneo Global</h2>
+        
+        <div id="results-content" class="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-center text-slate-400 font-medium shadow-xl">
+          Ingresa un dominio para ejecutar la auditoría integral en paralelo.
+        </div>
+      </div>
+
+      <!-- Sección de Contenido Técnico y Semántico para Motores de Búsqueda (Google & Bing) -->
+      <section class="bg-slate-100 border border-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 text-slate-800">
+        <h2 class="text-2xl font-bold text-slate-950 border-b border-slate-300 pb-3">
+          Guía Técnica: Diagnóstico de Servidores DNS y Seguridad de Correo Electrónico
+        </h2>
+        
+        <div class="space-y-4 text-sm leading-relaxed text-slate-700">
+          <p>
+            La infraestructura de nombres de dominio (<strong class="text-slate-900">DNS</strong>) y los protocolos de validación de correo electrónico son pilares fundamentales en la ciberseguridad corporativa. Una mala configuración en los registros autoritativos o la falta de endurecimiento en los mecanismos de autenticación expone a las organizaciones a ataques de suplantación de identidad (<span class="italic">spoofing</span>), fraude de CEO y la inclusión en listas negras de SPAM.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-6 pt-2">
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Servidores NS y Registros MX
+              </h3>
+              <p>
+                Los registros <strong class="text-slate-900">NS (Name Server)</strong> determinan las rutas autoritativas de tu zona. Por su parte, los registros <strong class="text-slate-900">MX (Mail Exchange)</strong> junto con sus prioridades y resolución de direcciones IP aseguran que el flujo de correo electrónico corporativo hacia plataformas como Microsoft Exchange, Microsoft 365 o Google Workspace se entregue sin interrupciones por fallas de ruta.
+              </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2">
+              <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+                <span class="text-amber-600">■</span> Conteo de Lookups SPF (RFC 7208)
+              </h3>
+              <p>
+                El estándar <strong class="text-slate-900">SPF (Sender Policy Framework)</strong> establece qué servidores tienen permiso de enviar correos en nombre de tu dominio. El estándar técnico limita estrictamente a un máximo de <strong class="text-slate-900">10 consultas DNS anidadas (lookups)</strong>; superar este umbral invalida por completo la directiva, dejando el dominio desprotegido.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-xs space-y-2 mt-4">
+            <h3 class="font-bold text-slate-950 text-base flex items-center gap-2">
+              <span class="text-amber-600">■</span> Cumplimiento y Políticas DMARC
+            </h3>
+            <p>
+              Implementar políticas estrictas de rechazo (<code class="font-mono bg-slate-200 px-1 py-0.5 rounded text-xs">-all</code> en SPF) combinadas con registros <strong class="text-slate-900">DMARC (Domain-based Message Authentication, Reporting, and Conformance)</strong> garantiza la integridad del canal de mensajería, permitiendo monitorear intentos de fraude y bloquear de forma automatizada los correos no autorizados antes de que lleguen a las bandejas de entrada de los usuarios.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('audit-form') as HTMLFormElement;
+    const input = document.getElementById('domain-input') as HTMLInputElement;
+    const content = document.getElementById('results-content') as HTMLDivElement;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const domain = input.value.trim();
+      if (!domain) return;
+
+      content.innerHTML = `
+        <div class="py-8 flex justify-center items-center gap-3">
+          <svg class="animate-spin h-6 w-6 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="font-semibold text-slate-300">Consultando registros autoritativos y calculando lookups SPF...</span>
+        </div>
+      `;
+
+      try {
+        const response = await fetch(`/api/dns-health?domain=${encodeURIComponent(domain)}`);
+        const result = await response.json();
+
+        if (!result.success) {
+          content.innerHTML = `<p class="text-red-400 font-semibold py-4">${result.error || 'Ocurrió un error al procesar la solicitud.'}</p>`;
+          return;
+        }
+
+        renderResults(result);
+      } catch (error) {
+        content.innerHTML = `<p class="text-red-400 font-semibold py-4">Error de red al conectar con el servidor.</p>`;
+      }
+    });
+
+    function renderResults(data: any) {
+      const hasNs = data.nameservers && data.nameservers.length > 0;
+      const mxRecords = data.mxRecords || data.mx || [];
+      const hasMx = mxRecords.length > 0;
+      const hasSpf = data.security && data.security.spf !== null;
+      const hasDmarc = data.security && data.security.dmarc !== null;
+
+      const nsHtml = hasNs 
+        ? `<ul class="space-y-2 text-sm text-slate-300">${data.nameservers.map((ns: string) => `<li class="font-mono bg-slate-900 border border-slate-800 px-3 py-2 rounded-lg">✔ ${ns}</li>`).join('')}</ul>`
+        : `<p class="text-amber-400 text-sm font-semibold">No se detectaron servidores de nombres (NS).</p>`;
+
+      let mxHtml = `<p class="text-amber-400 text-sm font-semibold">No se detectaron registros MX.</p>`;
+      
+      if (hasMx) {
+        let mxRows = '';
+        mxRecords.forEach((mx: any) => {
+          const hostname = mx.exchange || mx.host || 'Desconocido';
+          const priority = mx.priority !== undefined ? mx.priority : '-';
+          
+          const rawIps = mx.ip || mx.address || 'No disponible';
+          const ips = Array.isArray(rawIps) ? rawIps : [rawIps];
+
+          ips.forEach((ipAddr: string) => {
+            mxRows += `
+              <tr class="hover:bg-slate-900 transition-colors">
+                <td class="py-3 px-4 font-semibold text-white">${priority}</td>
+                <td class="py-3 px-4 text-amber-400 font-medium break-all">${hostname}</td>
+                <td class="py-3 px-4 font-mono text-xs text-slate-400">${ipAddr}</td>
+              </tr>
+            `;
+          });
+        });
+
+        mxHtml = `
+          <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900 shadow-sm text-left">
+            <table class="w-full border-collapse text-sm">
+              <thead class="bg-slate-950 text-slate-300 font-bold border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4 w-20">Pref</th>
+                  <th class="py-3 px-4">Hostname</th>
+                  <th class="py-3 px-4">IP Address</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 text-slate-300">
+                ${mxRows}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      let spfContentHtml = `<p class="text-amber-400 text-sm font-semibold">No se encontró registro SPF configurado.</p>`;
+      
+      if (hasSpf) {
+        const lookupCount = data.security.lookupCount;
+        const exceedsLimit = data.security.exceedsLimit;
+
+        let lookupBadgeColor = "bg-emerald-950/80 text-emerald-300 border-emerald-800";
+        let lookupText = "Óptimo (Dentro del límite permitido de 10)";
+        if (lookupCount > 10) {
+          lookupBadgeColor = "bg-red-950/80 text-red-300 border-red-800";
+          lookupText = "¡Peligro! Supera el límite máximo de 10 consultas (RFC 7208).";
+        } else if (lookupCount >= 8) {
+          lookupBadgeColor = "bg-amber-950/80 text-amber-300 border-amber-800";
+          lookupText = "Advertencia: Cerca del límite máximo de 10 consultas.";
+        }
+
+        const spfRecommendationHtml = !data.security.isStrictSpf ? `
+          <div class="mt-4 p-4 bg-amber-950/40 border border-amber-900/60 rounded-xl space-y-2">
+            <div class="flex items-center justify-between border-b border-amber-900/60 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-amber-400 font-bold">⚠</span>
+                <span class="font-bold text-amber-300 text-xs uppercase tracking-wider">Recomendación de Seguridad</span>
+              </div>
+              <span class="text-xs text-amber-400 font-medium">Mejorar seguridad</span>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 bg-amber-500 text-slate-950 text-xs font-bold rounded">CORREO</span>
+                  <h4 class="font-bold text-white text-sm">Política SPF estricta (-all)</h4>
+                </div>
+                <p class="text-xs text-slate-400">El registro SPF utiliza ~all o ?all. Cambie a -all para una aplicación estricta.</p>
+              </div>
+              <span class="text-xs font-bold text-red-400 bg-red-950 px-2 py-1 rounded shrink-0">-10 pts</span>
+            </div>
+          </div>
+        ` : '';
+
+        spfContentHtml = `
+          <div class="space-y-4">
+            <div class="p-4 border rounded-xl ${lookupBadgeColor} flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div>
+                <p class="font-bold text-sm uppercase tracking-wider">Límite de Consultas DNS (RFC 7208)</p>
+                <p class="text-sm mt-0.5">${lookupText}</p>
+              </div>
+              <div class="bg-slate-900 px-4 py-2 rounded-lg border border-slate-800 text-center shadow-xs">
+                <span class="block text-2xl font-black font-mono ${exceedsLimit ? 'text-red-400' : 'text-white'}">${lookupCount} / 10</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400">Lookups</span>
+              </div>
+            </div>
+
+            <code class="block bg-slate-900 text-amber-400 p-4 rounded-xl border border-slate-800 font-mono text-xs break-all">${data.security.spf}</code>
+
+            ${spfRecommendationHtml}
+          </div>
+        `;
+      }
+
+      const dmarcHtml = hasDmarc
+        ? `<code class="block bg-slate-900 text-amber-400 p-4 rounded-xl border border-slate-800 font-mono text-xs break-all">${data.security.dmarc}</code>`
+        : `<p class="text-amber-400 text-sm font-semibold">No se encontró registro DMARC en _dmarc.${data.domain}.</p>`;
+
+      content.innerHTML = `
+        <div class="space-y-6 text-left">
+          <div class="p-4 bg-emerald-950/60 border border-emerald-800 rounded-xl shadow-xs">
+            <p class="font-bold text-emerald-300">Auditoría completada para: <span class="font-mono underline">${data.domain}</span></p>
+            <p class="text-emerald-400 text-sm mt-1">Escaneo ejecutado de forma concurrente sobre los servidores autoritativos.</p>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl space-y-3">
+            <h3 class="font-bold text-white text-base border-b border-slate-800 pb-2">Servidores de Nombres (NS)</h3>
+            ${nsHtml}
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl space-y-3">
+            <h3 class="font-bold text-white text-base border-b border-slate-800 pb-2">Servidores de Correo (MX)</h3>
+            ${mxHtml}
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl space-y-3">
+            <h3 class="font-bold text-white text-base border-b border-slate-800 pb-2">Política SPF y Conteo de Lookups</h3>
+            ${spfContentHtml}
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl space-y-3">
+            <h3 class="font-bold text-white text-base border-b border-slate-800 pb-2">Política DMARC</h3>
+            ${dmarcHtml}
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</Layout>
