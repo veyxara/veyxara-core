@@ -12,15 +12,17 @@ export interface Wallpaper {
 
 export const wallpapers: Wallpaper[] = [
 
-  {
-    id: 'bulldog',
-    title: 'Bulldog Cyberdog',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/bulldog.webp',
-    downloadUrl: '/wallpapers/bulldog.webp',
-  },
+{
+  id: 'bulldog',
+  title: 'Bulldog Cyberdog',
+  category: 'Mobile',
+  resolution: '1080x1920 (FHD+)',
+  aspectRatio: '9:16',
+  // 1. La visualización se carga directamente desde Pinterest (cero espacio local ocupado)
+  image: 'https://i.pinimg.com/736x/ea/08/fe/ea08fe61ef22725d2e50ad460dc23020.jpg',
+  // 2. La descarga apunta a tu proxy interno pasando la URL codificada
+  downloadUrl: `/api/download-wallpaper?url=${encodeURIComponent('https://i.pinimg.com/736x/ea/08/fe/ea08fe61ef22725d2e50ad460dc23020.jpg')}`,
+},
   {
     id: 'veyx-ataque-ddos',
     title: 'VEYX - Contención de Ataque DDoS',
