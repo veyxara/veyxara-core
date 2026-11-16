@@ -12,34 +12,14 @@ export interface Wallpaper {
 
 export const wallpapers: Wallpaper[] = [
 
-{
-  id: 'bulldog',
-  title: 'Bulldog Cyberdog',
-  category: 'Mobile',
-  resolution: '1080x1920 (FHD+)',
-  aspectRatio: '9:16',
-  // 1. La visualización se carga directamente desde Pinterest (cero espacio local ocupado)
-  image: 'https://i.pinimg.com/736x/ea/08/fe/ea08fe61ef22725d2e50ad460dc23020.jpg',
-  // 2. La descarga apunta a tu proxy interno pasando la URL codificada
-  downloadUrl: `/api/download-wallpaper?url=${encodeURIComponent('https://i.pinimg.com/736x/ea/08/fe/ea08fe61ef22725d2e50ad460dc23020.jpg')}`,
-},
-  {
-    id: 'veyx-ataque-ddos',
-    title: 'VEYX - Contención de Ataque DDoS',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/ataque-ddos-mobile.webp',
-    downloadUrl: '/wallpapers/ataque-ddos-mobile.webp',
-  },
-  {
-    id: 'fenix-o-phoenix',
-    title: 'fenix o phoenix regenera de las cenizas',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/fenix-o-phoenix.webp',
-    downloadUrl: '/wallpapers/fenix-o-phoenix.webp',
+   {
+    id: 'protocolo-cibernetico',
+    title: 'Centinela del Protocolo Cibernético',
+    category: 'Desktop', 
+    resolution: '3840x2160 (4K)',
+    aspectRatio: '16:9',
+    image: '/wallpapers/protocolo-cibernetico.webp',    
+    downloadUrl: '/wallpapers/protocolo-cibernetico.webp'
   },
   {
     id: 'veyx-anubis-desktop',
@@ -50,14 +30,14 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/anubis-desktop-wallpaper.webp',    
     downloadUrl: '/wallpapers/anubis-desktop-wallpaper.webp'
   },
-  {
-    id: 'la-gorgona-medusa', 
-    title: 'La Gorgona Medusa mitología griega',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/la-gorgona-medusa.webp',
-    downloadUrl: '/wallpapers/la-gorgona-medusa.webp',
+   {
+    id: 'tigre-blanco',
+    title: 'Mythic Realms – White Tiger Titan',
+    category: 'Desktop', 
+    resolution: '3840x2160 (4K)',
+    aspectRatio: '16:9',
+    image: '/wallpapers/tigre-blanco.webp',    
+    downloadUrl: '/wallpapers/tigre-blanco.webp'
   },
   {
     id: 'batalla-de-dioses',
@@ -67,24 +47,6 @@ export const wallpapers: Wallpaper[] = [
     aspectRatio: '16:9',
     image: '/wallpapers/batalla-de-dioses.webp',    
     downloadUrl: '/wallpapers/batalla-de-dioses.webp'
-  },
-  {
-    id: 'sirena-mermaid', 
-    title: 'Sirena mermaid en el Abismo Encantado',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/sirena-mermaid.webp',
-    downloadUrl: '/wallpapers/sirena-mermaid.webp',
-  },
-  {
-    id: 'guerrera cibernética de Veyxara Core', 
-    title: 'Xara: la estratega y guerrera cibernética de Veyxara Core',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/xara-guerrera-cibernetica.webp',
-    downloadUrl: '/wallpapers/xara-guerrera-cibernetica.webp',
   },
    {
     id: 'viaje-a-las-estrellas',
@@ -149,15 +111,6 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/anubis-el-chacal.webp',
     downloadUrl: '/wallpapers/anubis-el-chacal.webp',
   },
-  {
-    id: 'valquirias-o-valkirias', 
-    title: 'Las Valquirias o valkirias mitologia Nordica',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/valquirias-o-valkirias.webp',
-    downloadUrl: '/wallpapers/valquirias-o-valkirias.webp',
-  },
     {
     id: 'perseo-vs-medusa',
     title: 'Perseo contra Medusa la Gorgona',
@@ -213,15 +166,6 @@ export const wallpapers: Wallpaper[] = [
     downloadUrl: '/wallpapers/leviatan-bestia-marina.webp'
   },
   {
-    id: 'san-miguel-arcangel', 
-    title: 'San Miguel Arcangel venciendo al demonio',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/san-miguel-arcangel.webp',
-    downloadUrl: '/wallpapers/san-miguel-arcangel.webp',
-  },
-  {
     id: 'angel-caido-o-de-la-muerte',
     title: 'Angel caido o Angel de la muerte',
     category: 'Desktop', 
@@ -229,15 +173,6 @@ export const wallpapers: Wallpaper[] = [
     aspectRatio: '16:9',
     image: '/wallpapers/angel-caido-de-la-muerte.webp',    
     downloadUrl: '/wallpapers/angel-caido-de-la-muerte.webp'
-  },
-   {
-    id: 'paisaje-hiperrealista', 
-    title: 'Paisaje natural hiperrealista de fantasía',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/paisaje-hiperrealista.webp',
-    downloadUrl: '/wallpapers/paisaje-hiperrealista.webp',
   },
     {
     id: 'exotraje-avanzado', 
@@ -266,15 +201,6 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/baphomet-templarios.webp',
     downloadUrl: '/wallpapers/baphomet-templarios.webp',
   },
-    {
-    id: 'jesucristo',
-    title: 'Jesucristo - Jesús de Nazaret',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/jesucristo.webp',    
-    downloadUrl: '/wallpapers/jesucristo.webp'
-  },
    {
     id: 'thor-dios-nordico',
     title: 'Thor dios Nordico',
@@ -301,24 +227,6 @@ export const wallpapers: Wallpaper[] = [
     aspectRatio: '9:16',
     image: '/wallpapers/paisaje-alienigena.webp',    
     downloadUrl: '/wallpapers/paisaje-alienigena.webp'
-  },
-    {
-    id: 'leviatan',
-    title: 'Leviatan-El Dragón del Abismo',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/leviatan.webp',    
-    downloadUrl: '/wallpapers/leviatan.webp'
-  },
-    {
-    id: 'hades-y-cerbero',
-    title: 'Hades y cerbero Veyxara',
-    category: 'Desktop', 
-    resolution: '3840x2160 (4K)',
-    aspectRatio: '16:9',
-    image: '/wallpapers/hades-y-cerbero.webp',    
-    downloadUrl: '/wallpapers/hades-y-cerbero.webp'
   },
    {
     id: 'cerbero',
@@ -400,24 +308,6 @@ export const wallpapers: Wallpaper[] = [
     aspectRatio: '16:9',
     image: '/wallpapers/creacion-adan.webp',    
     downloadUrl: '/wallpapers/creacion-adan.webp'
-  },
-    {
-    id: 'hellraiser',
-    title: 'Hellraiser - Puerta al infierno',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/hellraiser.webp',    
-    downloadUrl: '/wallpapers/hellraiser.webp'
-  },
-    {
-    id: 'don-quijote',
-    title: 'Don Quijote de la Mancha',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/don-quijote.webp',    
-    downloadUrl: '/wallpapers/don-quijote.webp'
   },
   {
     id: 'nave-veyxara',
