@@ -201,15 +201,6 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/baphomet-templarios.webp',
     downloadUrl: '/wallpapers/baphomet-templarios.webp',
   },
-   {
-    id: 'thor-dios-nordico',
-    title: 'Thor dios Nordico',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/thor-dios-nordico.webp',    
-    downloadUrl: '/wallpapers/thor-dios-nordico.webp'
-  },
     {
     id: 'rey-serpiente',
     title: 'Rey Serpiente',
@@ -273,15 +264,6 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/marilyn-monroe.webp',    
     downloadUrl: '/wallpapers/marilyn-monroe.webp'
   },
-   {
-    id: 'rey-leonidas',
-    title: 'Rey Leonidas',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/rey-leonidas.webp',    
-    downloadUrl: '/wallpapers/rey-leonidas.webp'
-  },
     {
     id: 'creacion-adan',
     title: 'La creación de Adán',
@@ -327,34 +309,7 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/guardian-estratega.webp',    
     downloadUrl: '/wallpapers/guardian-estratega.webp'
   },
-  {
-    id: 'thor-ragnarok',
-    title: 'Thor Ragnarok',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/thor-ragnarok.webp',    
-    downloadUrl: '/wallpapers/thor-ragnarok.webp'
-  },
-    {
-    id: 'alien',
-    title: 'Alien el octavo pasajero',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/alien.webp',    
-    downloadUrl: '/wallpapers/alien.webp'
-  },
-    {
-    id: 'depredador',
-    title: 'Depredador Tierras Salvajes',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/depredador.webp',    
-    downloadUrl: '/wallpapers/depredador.webp'
-  },
-  {
+   {
     id: 'nave-espacial',
     title: 'Nave Espacial',
     category: 'Desktop', 

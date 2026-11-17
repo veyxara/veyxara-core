@@ -19,12 +19,12 @@ export const wallpapers: Wallpaper[] = [
     downloadUrl: '',
   },
     {
-    id: 'marca-espacial',
-    title: 'Veyxara la X Espacial',
+    id: 'ojo-cibernetico',
+    title: 'VEYXARA | Beyond What We See',
     category: 'Official Asset',
     resolution: '1080x1920 (FHD+)',
     aspectRatio: '9:16',
-    image: '/wallpapers/marca-espacial.webp',
+    image: '/wallpapers/ojo-cibernetico.webp',
     downloadUrl: '',
   },
     {
