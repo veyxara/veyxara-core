@@ -2,6 +2,7 @@
 // src/pages/wallpapers.astro
 import Layout from '../layouts/Layout.astro';
 import WallpaperCard from '../components/WallpaperCard.astro';
+import type { Wallpaper } from '../components/WallpaperCard.astro';
 
 // 1. Importaciones locales (PC y Marcas)
 import { wallpapers as wallpapersBrand } from '../data/wallpapers-brand';
@@ -13,7 +14,7 @@ const PINTEREST_RSS_URLS = [
   'https://www.pinterest.com/arevaloalfredo69/veyxara-wallpapers-branding.rss'     
 ];
 
-let pinterestWallpapers = [];
+const pinterestWallpapers: Wallpaper[] = [];
 
 for (const rssUrl of PINTEREST_RSS_URLS) {
   try {
@@ -28,7 +29,7 @@ for (const rssUrl of PINTEREST_RSS_URLS) {
       const itemRegex = /<item>([\s\S]*?)<\/item>/g;
       let match;
 
-      // URL exacta y directa del tablero correspondiente (inglés o español)
+      // URL exacta y directa del tablero correspondiente
       const targetBoardUrl = rssUrl.replace('.rss', '');
 
       while ((match = itemRegex.exec(xmlText)) !== null) {
@@ -37,33 +38,39 @@ for (const rssUrl of PINTEREST_RSS_URLS) {
         const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/);
         const descMatch = itemContent.match(/<description>([\s\S]*?)<\/description>/);
         
-        let rawTitle = titleMatch 
+        const rawTitle = titleMatch 
           ? titleMatch[1].replace('<![CDATA[', '').replace(']]>', '').trim() 
-          : 'Veyxara Mobile Arte';
-          
-        let cleanTitle = rawTitle.split('#')[0].split('|')[0].trim();
-        if (cleanTitle.length > 45) {
-          cleanTitle = cleanTitle.substring(0, 42) + '...';
-        }
-        if (!cleanTitle) cleanTitle = 'Veyxara Mobile Arte';
-          
-        const descText = descMatch ? descMatch[1] : '';
-        const imgMatch = descText.match(/src="(https:\/\/i\.pinimg\.com\/[^"]+)"/) || itemContent.match(/(https:\/\/i\.pinimg\.com\/[^"'\s]+?\.(?:jpg|png|webp))/i);
-        let imageUrl = imgMatch ? imgMatch[1] : '';
-        
-        if (imageUrl) {
-          imageUrl = imageUrl.replace(/\/\d+x\//, '/736x/');
+          : '';
 
-          pinterestWallpapers.push({
-            id: `pin-${Math.random().toString(36).substring(2, 9)}`,
-            title: cleanTitle,
-            category: 'Mobile',
-            resolution: '1080x1920 (FHD+)',
-            aspectRatio: '9:16',
-            image: imageUrl,
-            pinterestUrl: targetBoardUrl // <-- Garantía total: abre el tablero exacto de la imagen
-          });
+        const descText = descMatch ? descMatch[1] : '';
+        const imgMatch =
+          descText.match(/src="(https:\/\/i\.pinimg\.com\/[^"]+)"/) ||
+          itemContent.match(/(https:\/\/i\.pinimg\.com\/[^"'\s]+?\.(?:jpg|png|webp))/i);
+
+        const imageUrl = imgMatch?.[1] ? imgMatch[1].replace(/\/\d+x\//, '/736x/') : '';
+
+        // Si falta imagen o título real, se salta este ítem y continúa con el siguiente
+        if (!imageUrl || !rawTitle) {
+          continue;
         }
+
+        let cleanTitle = rawTitle.split('#')[0].split('|')[0].trim();
+        if (!cleanTitle) {
+          continue;
+        }
+        if (cleanTitle.length > 45) {
+          cleanTitle = `${cleanTitle.substring(0, 42)}...`;
+        }
+
+        pinterestWallpapers.push({
+          id: `pin-${pinterestWallpapers.length}`,
+          title: cleanTitle,
+          category: 'Mobile',
+          resolution: '1080x1920 (FHD+)',
+          aspectRatio: '9:16',
+          image: imageUrl,
+          pinterestUrl: targetBoardUrl
+        });
       }
     } else {
       console.warn(`[Pinterest RSS] Advertencia: La URL ${rssUrl} respondió con estado ${response.status}`);
@@ -181,11 +188,27 @@ const randomFeatured = featuredPool.length > 0
         </div>
 
         {pinterestWallpapers.length > 0 ? (
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {pinterestWallpapers.map((wallpaper, index) => (
-              <WallpaperCard wallpaper={wallpaper} index={`pin-${index}`} />
-            ))}
-          </div>
+          <>
+            <div id="pinterest-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {pinterestWallpapers.map((wallpaper, index) => (
+                <div class={`pinterest-block-item ${index >= 12 ? 'hidden' : ''}`}>
+                  <WallpaperCard wallpaper={wallpaper} index={`pin-${index}`} />
+                </div>
+              ))}
+            </div>
+
+            {pinterestWallpapers.length > 12 && (
+              <div class="mt-10 flex justify-center">
+                <button
+                  id="load-more-pinterest-btn"
+                  type="button"
+                  class="px-6 py-2.5 rounded-xl bg-[#071426] border border-[#00CFFF]/50 text-[#00CFFF] font-mono text-sm font-bold hover:bg-[#00CFFF] hover:text-[#040914] transition-all cursor-pointer"
+                >
+                  Cargar más
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div class="text-center py-16 font-mono text-zinc-500 bg-[#071426]/30 border border-zinc-800 rounded-xl">
             Sincronizando galería externa de Pinterest... (Verificando conexión con los tableros RSS).
@@ -196,3 +219,38 @@ const randomFeatured = featuredPool.length > 0
     </div>
   </main>
 </Layout>
+
+<script>
+  const setupPinterestLoadMore = () => {
+    const btn = document.getElementById('load-more-pinterest-btn');
+    if (!btn || btn.dataset.bound === 'true') return;
+    btn.dataset.bound = 'true';
+
+    const STEP = 12;
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.pinterest-block-item'));
+
+    const syncButton = () => {
+      const hiddenLeft = items.some((el) => el.classList.contains('hidden'));
+      if (!hiddenLeft) {
+        btn.classList.add('hidden');
+      }
+    };
+
+    btn.addEventListener('click', () => {
+      let shown = 0;
+      for (const el of items) {
+        if (el.classList.contains('hidden')) {
+          el.classList.remove('hidden');
+          shown += 1;
+          if (shown >= STEP) break;
+        }
+      }
+      syncButton();
+    });
+
+    syncButton();
+  };
+
+  document.addEventListener('DOMContentLoaded', setupPinterestLoadMore);
+  document.addEventListener('astro:page-load', setupPinterestLoadMore);
+</script>

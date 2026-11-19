@@ -12,7 +12,25 @@ export interface Wallpaper {
 
 export const wallpapers: Wallpaper[] = [
 
+    {
+    id: 'luna-es-hueca',
+    title: 'Teóricos de la conspiración creyeron que la Luna es hueca',
+    category: 'Desktop', 
+    resolution: '3840x2160 (4K)',
+    aspectRatio: '16:9',
+    image: '/wallpapers/luna-es-hueca.webp',    
+    downloadUrl: '/wallpapers/luna-es-hueca.webp'
+  },
    {
+    id: 'centauro',
+    title: 'Centauro de la Mitologia Griega',
+    category: 'Desktop', 
+    resolution: '3840x2160 (4K)',
+    aspectRatio: '16:9',
+    image: '/wallpapers/centauro.webp',    
+    downloadUrl: '/wallpapers/centauro.webp'
+  },
+     {
     id: 'protocolo-cibernetico',
     title: 'Centinela del Protocolo Cibernético',
     category: 'Desktop', 
@@ -156,7 +174,7 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/baphomet-bafomet.webp',    
     downloadUrl: '/wallpapers/baphomet-bafomet.webp'
   },
-     {
+    {
     id: 'leviatan-bestia-marina',
     title: 'leviatan la bestia El monstruo marino',
     category: 'Desktop', 
@@ -174,16 +192,7 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/angel-caido-de-la-muerte.webp',    
     downloadUrl: '/wallpapers/angel-caido-de-la-muerte.webp'
   },
-    {
-    id: 'exotraje-avanzado', 
-    title: 'Exotraje cinetico Avanzado',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/exotraje-avanzado.webp',
-    downloadUrl: '/wallpapers/exotraje-avanzado.webp',
-  },
-    {
+  {
     id: 'distrito-central',
     title: 'Distrito Central',
     category: 'Desktop', 
@@ -255,7 +264,7 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/el-Joker.webp',    
     downloadUrl: '/wallpapers/el-Joker.webp'
   },
-  {
+   {
     id: 'marilyn-monroe',
     title: 'Marilyn Monroe',
     category: 'Mobile', 
@@ -273,7 +282,7 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/creacion-adan.webp',    
     downloadUrl: '/wallpapers/creacion-adan.webp'
   },
-  {
+   {
     id: 'nave-veyxara',
     title: 'Nave Internacional Espacial',
     category: 'Mobile', 
@@ -282,16 +291,7 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/nave-veyxara.webp',    
     downloadUrl: '/wallpapers/nave-veyxara.webp'
   },
-  {
-    id: 'angel-penitente',
-    title: 'Angel Penitente',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/angel-penitente.webp',    
-    downloadUrl: '/wallpapers/angel-penitente.webp'
-  },
-  {
+   {
     id: 'tecnologia-futuro',
     title: 'La tecnologia en una mano',
     category: 'Mobile', 
@@ -300,7 +300,7 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/tecnologia-futuro.webp',    
     downloadUrl: '/wallpapers/tecnologia-futuro.webp'
   },
-  {
+   {
     id: 'guardian-estratega',
     title: 'El Guardian',
     category: 'Mobile', 
