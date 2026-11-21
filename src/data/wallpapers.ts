@@ -141,9 +141,9 @@ export const wallpapers: Wallpaper[] = [
     {
     id: 'tutankamon-mascara-dorada', 
     title: 'Tutankamon la mascara dorada',
-    category: 'Mobile',
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
+    category: 'Desktop', 
+    resolution: '3840x2160 (4K)',
+    aspectRatio: '16:9',
     image: '/wallpapers/tutankamon-mascara-dorada.webp',
     downloadUrl: '/wallpapers/tutankamon-mascara-dorada.webp',
   },
@@ -264,15 +264,6 @@ export const wallpapers: Wallpaper[] = [
     image: '/wallpapers/el-Joker.webp',    
     downloadUrl: '/wallpapers/el-Joker.webp'
   },
-   {
-    id: 'marilyn-monroe',
-    title: 'Marilyn Monroe',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/marilyn-monroe.webp',    
-    downloadUrl: '/wallpapers/marilyn-monroe.webp'
-  },
     {
     id: 'creacion-adan',
     title: 'La creación de Adán',
@@ -290,24 +281,6 @@ export const wallpapers: Wallpaper[] = [
     aspectRatio: '9:16',
     image: '/wallpapers/nave-veyxara.webp',    
     downloadUrl: '/wallpapers/nave-veyxara.webp'
-  },
-   {
-    id: 'tecnologia-futuro',
-    title: 'La tecnologia en una mano',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/tecnologia-futuro.webp',    
-    downloadUrl: '/wallpapers/tecnologia-futuro.webp'
-  },
-   {
-    id: 'guardian-estratega',
-    title: 'El Guardian',
-    category: 'Mobile', 
-    resolution: '1080x1920 (FHD+)',
-    aspectRatio: '9:16',
-    image: '/wallpapers/guardian-estratega.webp',    
-    downloadUrl: '/wallpapers/guardian-estratega.webp'
   },
    {
     id: 'nave-espacial',
