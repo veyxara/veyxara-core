@@ -1,8 +1,13 @@
 {
   "redirects": [
     {
-      "source": "/wallpapers/veyx-:slug(.*)",
-      "destination": "/wallpapers/:slug",
+      "source": "/wallpapers",
+      "destination": "https://studio.veyxara.com",
+      "permanent": true
+    },
+    {
+      "source": "/wallpapers/:path*",
+      "destination": "https://studio.veyxara.com",
       "permanent": true
     },
     {

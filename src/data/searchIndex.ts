@@ -1,6 +1,5 @@
 // src/data/searchIndex.ts
 import { getCollection } from 'astro:content';
-import { wallpapers } from './wallpapers'; // Tu archivo existente de wallpapers
 
 export interface SearchItem {
   id: string;
@@ -72,15 +71,17 @@ export async function getDynamicSearchIndex(): Promise<SearchItem[]> {
     console.error('[Veyxara Search] Error al leer la colección "recursos":', e);
   }
 
-  // 3. Wallpapers dinámicos leídos directamente de tu archivo wallpapers.ts existente
-  const wallpaperItems: SearchItem[] = wallpapers.map(wp => ({
-    id: `wp-${wp.id}`,
-    title: wp.title,
-    description: `Wallpaper ${wp.category} (${wp.resolution}) - Veyxara Core`,
-    category: 'wallpaper',
-    path: wp.downloadUrl,
-    content: `${wp.title} wallpaper fondo ${wp.category.toLowerCase()} ${wp.resolution} ${wp.id.replace(/-/g, ' ')}`.toLowerCase()
-  }));
+  // 3. Acceso directo al portal independiente Veyxara Studio
+  const studioItems: SearchItem[] = [
+    {
+      id: 'veyxara-studio-portal',
+      title: 'Veyxara Studio — Arte Digital & Wallpapers',
+      description: 'Galería oficial de fondos de pantalla (PC/Móvil), arte IA y piezas audiovisuales en studio.veyxara.com',
+      category: 'wallpaper',
+      path: 'https://studio.veyxara.com',
+      content: 'veyxara studio wallpaper wallpapers fondos de pantalla arte digital ia reels estudio visual'.toLowerCase()
+    }
+  ];
 
-  return [...toolItems, ...recursoItems, ...wallpaperItems];
+  return [...toolItems, ...recursoItems, ...studioItems];
 }
