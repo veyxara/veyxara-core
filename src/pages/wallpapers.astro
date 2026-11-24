@@ -8,19 +8,21 @@ import type { Wallpaper } from '../components/WallpaperCard.astro';
 import { wallpapers as wallpapersBrand } from '../data/wallpapers-brand';
 import { wallpapers as pcWallpapers } from '../data/wallpapers';
 
-// 2. URLs RSS oficiales de tus 2 tableros de Pinterest
+// 2. URLs RSS oficiales EXCLUSIVAMENTE de Veyxara Core (Veyxara Studio queda fuera)
 const PINTEREST_RSS_URLS = [
-  'https://www.pinterest.com/arevaloalfredo69/wallpapers-branding.rss', 
-  'https://www.pinterest.com/arevaloalfredo69/veyxara-wallpapers-branding.rss'     
+  'https://www.pinterest.com/arevaloalfredo69/wallpapers-branding.rss',
+  'https://www.pinterest.com/arevaloalfredo69/veyxara-wallpapers-branding.rss'
 ];
 
 const pinterestWallpapers: Wallpaper[] = [];
+const seenImages = new Set<string>();
 
 for (const rssUrl of PINTEREST_RSS_URLS) {
   try {
     const response = await fetch(rssUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       }
     });
 
@@ -29,17 +31,16 @@ for (const rssUrl of PINTEREST_RSS_URLS) {
       const itemRegex = /<item>([\s\S]*?)<\/item>/g;
       let match;
 
-      // URL exacta y directa del tablero correspondiente
       const targetBoardUrl = rssUrl.replace('.rss', '');
 
       while ((match = itemRegex.exec(xmlText)) !== null) {
         const itemContent = match[1];
-        
+
         const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/);
         const descMatch = itemContent.match(/<description>([\s\S]*?)<\/description>/);
-        
-        const rawTitle = titleMatch 
-          ? titleMatch[1].replace('<![CDATA[', '').replace(']]>', '').trim() 
+
+        const rawTitle = titleMatch
+          ? titleMatch[1].replace('<![CDATA[', '').replace(']]>', '').trim()
           : '';
 
         const descText = descMatch ? descMatch[1] : '';
@@ -49,8 +50,7 @@ for (const rssUrl of PINTEREST_RSS_URLS) {
 
         const imageUrl = imgMatch?.[1] ? imgMatch[1].replace(/\/\d+x\//, '/736x/') : '';
 
-        // Si falta imagen o título real, se salta este ítem y continúa con el siguiente
-        if (!imageUrl || !rawTitle) {
+        if (!imageUrl || !rawTitle || seenImages.has(imageUrl)) {
           continue;
         }
 
@@ -62,6 +62,7 @@ for (const rssUrl of PINTEREST_RSS_URLS) {
           cleanTitle = `${cleanTitle.substring(0, 42)}...`;
         }
 
+        seenImages.add(imageUrl);
         pinterestWallpapers.push({
           id: `pin-${pinterestWallpapers.length}`,
           title: cleanTitle,
@@ -73,36 +74,41 @@ for (const rssUrl of PINTEREST_RSS_URLS) {
         });
       }
     } else {
-      console.warn(`[Pinterest RSS] Advertencia: La URL ${rssUrl} respondió con estado ${response.status}`);
+      console.warn(
+        `[Pinterest RSS] Advertencia: La URL ${rssUrl} respondió con estado ${response.status}`
+      );
     }
   } catch (error) {
     console.error(`[Pinterest RSS Error crítico para ${rssUrl}]:`, error);
   }
 }
 
-console.log(`[Veyxara System] Pines de Pinterest cargados exitosamente: ${pinterestWallpapers.length}`);
+console.log(
+  `[Veyxara System] Pines de Pinterest cargados exitosamente: ${pinterestWallpapers.length}`
+);
 
-// 3. Selección Aleatoria Estática (Carrusel intacto que elige una imagen al azar por recarga)
+// 3. Selección Aleatoria Estática (Carrusel intacto que elige una imagen al azar por compilación)
 const featuredPool = [...wallpapersBrand, ...pcWallpapers];
-const randomFeatured = featuredPool.length > 0 
-  ? featuredPool[Math.floor(Math.random() * featuredPool.length)] 
-  : null;
+const randomFeatured =
+  featuredPool.length > 0
+    ? featuredPool[Math.floor(Math.random() * featuredPool.length)]
+    : null;
 ---
 
 <Layout title="Veyxara Core | Wallpapers y Activos">
   <main class="w-full min-h-screen bg-[#040914] text-[#E8EEF5] py-12 px-4 md:px-8">
     <div class="max-w-7xl mx-auto">
-      
+
       <!-- SECCIÓN SUPERIOR: TÍTULO + IMAGEN DESTACADA ALEATORIA -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
-        
+
         <div class="lg:col-span-7 text-left">
           <span class="text-xs font-mono text-[#00CFFF] uppercase tracking-widest">Repositorio Oficial</span>
           <h1 class="text-3xl md:text-5xl font-bold font-mono text-[#E8EEF5] mt-2 mb-4">
             Veyxara Core | <span class="text-[#FF9900]">Wallpapers</span>
           </h1>
           <p class="text-sm md:text-base text-zinc-400 leading-relaxed max-w-xl">
-            Recursos institucionales exclusivos, fondos de escritorio para PC en alta definición y galería móvil sincronizada automáticamente desde nuestros tableros en <span class="text-[#FF9900] font-semibold">Pinterest</span>.
+            Recursos institucionales exclusivos, fondos de escritorio para PC en alta definición y galería móvil sincronizada desde los tableros de <span class="text-[#FF9900] font-semibold">Pinterest</span> de Veyxara Core.
           </p>
         </div>
 
@@ -180,7 +186,7 @@ const randomFeatured = featuredPool.length > 0
             <h2 class="text-xl font-bold font-mono text-[#00CFFF] flex items-center gap-2">
               <span>📱 Galería Móvil (Pinterest)</span>
             </h2>
-            <p class="text-xs text-zinc-400 mt-1">Sincronización automática en vivo desde nuestros tableros de Pinterest.</p>
+            <p class="text-xs text-zinc-400 mt-1">Sincronización desde nuestros tableros oficiales de Veyxara Core en Pinterest.</p>
           </div>
           <span class="text-xs font-mono px-3 py-1 bg-[#071426] border border-[#FF9900]/30 text-[#FF9900] rounded-full">
             Cloud CDN
